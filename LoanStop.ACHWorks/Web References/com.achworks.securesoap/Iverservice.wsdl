@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:ns1="urn:verIntf" name="Iverservice" targetNamespace="http://tempuri.org/" xmlns="http://schemas.xmlsoap.org/wsdl/">
+  <types>
+    <xs:schema xmlns="urn:verIntf" targetNamespace="urn:verIntf">
+      <xs:complexType name="CompanyInfo">
+        <xs:sequence>
+          <xs:element name="LocID" type="xs:string" />
+          <xs:element name="Company" type="xs:string" />
+          <xs:element name="CompanyKey" type="xs:string" />
+          <xs:element name="Email" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="CustomerInfo">
+        <xs:sequence>
+          <xs:element name="CustomerName" type="xs:string" />
+          <xs:element name="SSN" type="xs:string" />
+          <xs:element name="DateOfBirth" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="AcctInfo">
+        <xs:sequence>
+          <xs:element name="Amount" type="xs:string" />
+          <xs:element name="AcctType" type="xs:string" />
+          <xs:element name="AcctNo" type="xs:string" />
+          <xs:element name="RoutingNo" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ResultVer">
+        <xs:sequence>
+          <xs:element name="RefNo" type="xs:string" />
+          <xs:element name="RequestCode" type="xs:string" />
+          <xs:element name="SuccessCode" type="xs:string" />
+          <xs:element name="ResultVerXML" type="xs:string" />
+          <xs:element name="CKVXML" type="xs:string" />
+          <xs:element name="SSNXML" type="xs:string" />
+          <xs:element name="BTRNXML" type="xs:string" />
+          <xs:element name="OFACXML" type="xs:string" />
+          <xs:element name="ServerTime" type="xs:string" />
+          <xs:element name="Remarks" type="xs:string" />
+        </xs:sequence>
+      </xs:complexType>
+      <xs:complexType name="ArrayOfString">
+        <xs:complexContent mixed="false">
+          <xs:restriction base="soapenc:Array">
+            <xs:sequence />
+            <xs:attribute xmlns:n1="http://schemas.xmlsoap.org/wsdl/" n1:arrayType="xs:string[]" ref="soapenc:arrayType" />
+          </xs:restriction>
+        </xs:complexContent>
+      </xs:complexType>
+    </xs:schema>
+  </types>
+  <message name="ConnectionCheck0Request">
+    <part name="LocID" type="xs:string" />
+    <part name="Company" type="xs:string" />
+    <part name="CompanyKey" type="xs:string" />
+  </message>
+  <message name="ConnectionCheck0Response">
+    <part name="return" type="xs:string" />
+  </message>
+  <message name="TSSVerify1Request">
+    <part name="InpServiceCode" type="xs:string" />
+    <part name="InpCompanyInfo" type="ns1:CompanyInfo" />
+    <part name="InpCustomerInfo" type="ns1:CustomerInfo" />
+    <part name="InpAcctInfo" type="ns1:AcctInfo" />
+  </message>
+  <message name="TSSVerify1Response">
+    <part name="return" type="ns1:ResultVer" />
+  </message>
+  <message name="TSSVerifyBatch2Request">
+    <part name="InpServiceCode" type="xs:string" />
+    <part name="InpCompanyInfo" type="ns1:CompanyInfo" />
+    <part name="InpBatchInput" type="ns1:ArrayOfString" />
+  </message>
+  <message name="TSSVerifyBatch2Response">
+    <part name="return" type="ns1:ArrayOfString" />
+  </message>
+  <portType name="Iver">
+    <operation name="ConnectionCheck">
+      <input message="tns:ConnectionCheck0Request" />
+      <output message="tns:ConnectionCheck0Response" />
+    </operation>
+    <operation name="TSSVerify">
+      <input message="tns:TSSVerify1Request" />
+      <output message="tns:TSSVerify1Response" />
+    </operation>
+    <operation name="TSSVerifyBatch">
+      <input message="tns:TSSVerifyBatch2Request" />
+      <output message="tns:TSSVerifyBatch2Response" />
+    </operation>
+  </portType>
+  <binding name="Iverbinding" type="tns:Iver">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" style="rpc" />
+    <operation name="ConnectionCheck">
+      <soap:operation soapAction="urn:verIntf-Iver#ConnectionCheck" style="rpc" />
+      <input message="tns:ConnectionCheck0Request">
+        <soap:body use="encoded" namespace="urn:verIntf-Iver" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output message="tns:ConnectionCheck0Response">
+        <soap:body use="encoded" namespace="urn:verIntf-Iver" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="TSSVerify">
+      <soap:operation soapAction="urn:verIntf-Iver#TSSVerify" style="rpc" />
+      <input message="tns:TSSVerify1Request">
+        <soap:body use="encoded" namespace="urn:verIntf-Iver" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output message="tns:TSSVerify1Response">
+        <soap:body use="encoded" namespace="urn:verIntf-Iver" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+    <operation name="TSSVerifyBatch">
+      <soap:operation soapAction="urn:verIntf-Iver#TSSVerifyBatch" style="rpc" />
+      <input message="tns:TSSVerifyBatch2Request">
+        <soap:body use="encoded" namespace="urn:verIntf-Iver" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </input>
+      <output message="tns:TSSVerifyBatch2Response">
+        <soap:body use="encoded" namespace="urn:verIntf-Iver" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+      </output>
+    </operation>
+  </binding>
+  <service name="Iverservice">
+    <port name="IverPort" binding="tns:Iverbinding">
+      <soap:address location="https://securesoap.achworks.com/exec/ver.tss/soap/Iver" />
+    </port>
+  </service>
+</definitions>

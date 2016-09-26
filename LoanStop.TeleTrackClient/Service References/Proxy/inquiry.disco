@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<discovery xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.xmlsoap.org/disco/">
+  <contractRef ref="https://xmltest.teletrack.com/inquiry.asmx?wsdl" docRef="https://xmltest.teletrack.com/inquiry.asmx" xmlns="http://schemas.xmlsoap.org/disco/scl/" />
+  <soap address="https://xmltest.teletrack.com/inquiry.asmx" xmlns:q1="http://xml.teletrack.com/transaction" binding="q1:InquirySoap" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+  <soap address="https://xmltest.teletrack.com/inquiry.asmx" xmlns:q2="http://xml.teletrack.com/transaction" binding="q2:InquirySoap12" xmlns="http://schemas.xmlsoap.org/disco/soap/" />
+</discovery>

@@ -1,0 +1,11 @@
+D:\GitHub\loanstop\LoanStop.Entities\bin\x64\Debug\LoanStop.Entities.dll
+D:\GitHub\loanstop\LoanStop.Entities\bin\x64\Debug\LoanStop.Entities.pdb
+D:\GitHub\loanstop\LoanStop.Entities\bin\x64\Debug\Newtonsoft.Json.dll
+D:\GitHub\loanstop\LoanStop.Entities\bin\x64\Debug\PlainElastic.Net.dll
+D:\GitHub\loanstop\LoanStop.Entities\bin\x64\Debug\Newtonsoft.Json.pdb
+D:\GitHub\loanstop\LoanStop.Entities\bin\x64\Debug\Newtonsoft.Json.xml
+D:\GitHub\loanstop\LoanStop.Entities\bin\x64\Debug\PlainElastic.Net.pdb
+D:\GitHub\loanstop\LoanStop.Entities\bin\x64\Debug\PlainElastic.Net.xml
+D:\GitHub\loanstop\LoanStop.Entities\obj\x64\Debug\LoanStop.Entities.dll
+D:\GitHub\loanstop\LoanStop.Entities\obj\x64\Debug\LoanStop.Entities.pdb
+D:\GitHub\loanstop\LoanStop.Entities\obj\x64\Debug\LoanStop.Entities.csprojResolveAssemblyReference.cache

@@ -1,0 +1,5 @@
+D:\GitHub\loanstop\LoanStop.WebSite\ACHFile\ACHFile\bin\Debug\ACHFile.dll
+D:\GitHub\loanstop\LoanStop.WebSite\ACHFile\ACHFile\bin\Debug\ACHFile.pdb
+D:\GitHub\loanstop\LoanStop.WebSite\ACHFile\ACHFile\obj\Debug\ACHFile.csprojResolveAssemblyReference.cache
+D:\GitHub\loanstop\LoanStop.WebSite\ACHFile\ACHFile\obj\Debug\ACHFile.dll
+D:\GitHub\loanstop\LoanStop.WebSite\ACHFile\ACHFile\obj\Debug\ACHFile.pdb

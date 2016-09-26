@@ -1,0 +1,13 @@
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\LoanStop.VectraFile.dll
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\LoanStop.VectraFile.pdb
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\LoanStop.DBCore.dll
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\LoanStop.Entities.dll
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\EntityFramework.dll
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\LoanStop.DBCore.pdb
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\LoanStop.Entities.pdb
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\EntityFramework.xml
+D:\GitHub\loanstop\LoanStop.VectraFile\obj\Release\LoanStop.VectraFile.dll
+D:\GitHub\loanstop\LoanStop.VectraFile\obj\Release\LoanStop.VectraFile.pdb
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\LoanStop.VectraFile.dll.config
+D:\GitHub\loanstop\LoanStop.VectraFile\bin\Release\MySql.Data.dll
+D:\GitHub\loanstop\LoanStop.VectraFile\obj\Release\LoanStop.VectraFile.csprojResolveAssemblyReference.cache

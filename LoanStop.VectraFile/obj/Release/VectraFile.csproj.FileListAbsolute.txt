@@ -1,0 +1,4 @@
+D:\GitHub\loanstop\LoanStop.WebSite\VectraFile\VectraFile\bin\Release\VectraFile.dll
+D:\GitHub\loanstop\LoanStop.WebSite\VectraFile\VectraFile\bin\Release\VectraFile.pdb
+D:\GitHub\loanstop\LoanStop.WebSite\VectraFile\VectraFile\obj\Release\VectraFile.dll
+D:\GitHub\loanstop\LoanStop.WebSite\VectraFile\VectraFile\obj\Release\VectraFile.pdb

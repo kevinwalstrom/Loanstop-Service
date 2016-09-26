@@ -1,0 +1,826 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://xml.teletrack.com/reporting" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:s1="http://xml.teletrack.com/globals" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://xml.teletrack.com/reporting" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://xml.teletrack.com/reporting">
+      <s:import namespace="http://xml.teletrack.com/globals" />
+      <s:element name="ReportData">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransactionSet" type="tns:TransactionSetEntity" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ReportDataResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransactionResponseSet" type="tns:TransactionResponseSetEntity" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransactionResponseSet" type="tns:TransactionResponseSetEntity" />
+      <s:complexType name="TransactionResponseSetEntity">
+        <s:sequence>
+          <s:element maxOccurs="unbounded" name="TransactionReportResponse" type="tns:TransactionReportResponseEntity" />
+        </s:sequence>
+        <s:attribute name="Timestamp" type="s:dateTime" use="optional">
+          <s:annotation>
+            <s:documentation>This is the timestamp from Teletrack.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="SubscriberID" type="s:string" use="required">
+          <s:annotation>
+            <s:documentation>The subscriber ID for the subscriber who sent the transaction report.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="TeletrackXMLVersion" type="s:string" use="optional">
+          <s:annotation>
+            <s:documentation>This is the version of the Teletrack transaction XML schema.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+      </s:complexType>
+      <s:complexType name="TransactionReportResponseEntity">
+        <s:annotation>
+          <s:documentation>Contains the results of recording a subscriber-consumer transaction.  If LoanNumber is not provided, then TransactionCode will be set.  If TransactionCode is not available, then ConsumerSSN and LoanIssuedDatetime are set.</s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element minOccurs="0" name="TransactionErrors">
+            <s:complexType>
+              <s:sequence>
+                <s:element minOccurs="0" maxOccurs="5" name="Error" type="s1:TransactionErrorDetailsEntity" />
+              </s:sequence>
+            </s:complexType>
+          </s:element>
+        </s:sequence>
+        <s:attribute name="LoanNumber" type="s:string" use="optional" />
+        <s:attribute name="TransactionCode" type="s1:AlphanumericString" use="optional" />
+        <s:attribute name="ConsumerSSN" type="s1:UINType" use="optional" />
+        <s:attribute name="LoanIssuedDatetime" type="s:dateTime" use="optional" />
+      </s:complexType>
+      <s:element name="TransactionSet" type="tns:TransactionSetEntity" />
+      <s:complexType name="TransactionSetEntity">
+        <s:sequence>
+          <s:element minOccurs="0" name="Software" type="s1:SoftwareEntity" />
+          <s:element name="Subscriber" type="s1:SubscriberEntity" />
+          <s:element maxOccurs="unbounded" name="TransactionReport" type="tns:TransactionReportEntity" />
+        </s:sequence>
+        <s:attribute name="Timestamp" type="s:dateTime" use="optional">
+          <s:annotation>
+            <s:documentation>This is the timestamp from the client-side (subscriber).</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="TeletrackXMLVersion" type="s:string" use="required">
+          <s:annotation>
+            <s:documentation>This is the version of the Teletrack transaction XML schema.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+      </s:complexType>
+      <s:complexType name="TransactionReportEntity">
+        <s:annotation>
+          <s:documentation>Describes the complete details of a subscriber-consumer transaction.  Includes loan origination, status change, payment, charge off, closure.</s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element name="Consumer" type="tns:ConsumerEntity" />
+          <s:element minOccurs="0" name="Cosigner" type="tns:ConsumerEntity" />
+          <s:element name="Loan" type="tns:LoanEntity" />
+          <s:element minOccurs="0" name="BankAccount" type="s1:BankAccountEntity" />
+        </s:sequence>
+        <s:attribute default="New" name="RecordType" use="optional">
+          <s:annotation>
+            <s:documentation>"New" or "Update".</s:documentation>
+          </s:annotation>
+          <s:simpleType>
+            <s:restriction base="s:string">
+              <s:enumeration value="New" />
+              <s:enumeration value="Update" />
+            </s:restriction>
+          </s:simpleType>
+        </s:attribute>
+      </s:complexType>
+      <s:complexType name="ConsumerEntity">
+        <s:annotation>
+          <s:documentation>Identifies the consumer who is responsible for the account.</s:documentation>
+        </s:annotation>
+        <s:sequence>
+          <s:element name="UIN" type="s1:UINEntity" />
+          <s:element name="Name" type="s1:NameEntity" />
+          <s:element minOccurs="0" name="BirthDate" type="s:date" />
+          <s:element minOccurs="0" name="Address" type="s1:AddressEntity" />
+          <s:element minOccurs="0" name="Phone" type="s1:PhoneEntity" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="LoanEntity">
+        <s:annotation>
+          <s:documentation>Describes the details and status of a loan.</s:documentation>
+        </s:annotation>
+        <s:attribute name="LoanType" type="s1:LoanTypeType" use="required">
+          <s:annotation>
+            <s:documentation>Payday, Installment, AutoEquity, or SimpleInterest.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="OpenDatetime" type="s:dateTime" use="required">
+          <s:annotation>
+            <s:documentation>Date and time the loan was issued.  Time is for systems that require a time, otherwise is optional (should be 00:00:00).</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="OriginalBalance" type="s:decimal" use="optional">
+          <s:annotation>
+            <s:documentation>Original loan amount.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="Fees" type="s:decimal" use="optional">
+          <s:annotation>
+            <s:documentation>Fees associated with the loan.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="OtherFeeAmount" type="s:decimal" use="optional">
+          <s:annotation>
+            <s:documentation>Other fees.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="OtherFeeType" type="s:string" use="optional">
+          <s:annotation>
+            <s:documentation>Type of other fees.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="DueDate" type="s:date" use="required">
+          <s:annotation>
+            <s:documentation>Date the loan is due (or the final payment is due).</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="CurrentBalance" type="s:decimal" use="required">
+          <s:annotation>
+            <s:documentation>Current balance of the account.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="ClosedDatetime" type="s:dateTime" use="optional">
+          <s:annotation>
+            <s:documentation>Date the loan was closed (paid or set to another status).  Time is for systems that require a time, otherwise is optional (should be 00:00:00).</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="NumberOfPaymentsScheduled" type="s:int" use="optional">
+          <s:annotation>
+            <s:documentation>Number of payments scheduled for the loan.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="PaymentFrequency" type="s1:PaymentFrequencyType" use="optional">
+          <s:annotation>
+            <s:documentation>How often the payments are made.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="PaymentAmount" type="s:decimal" use="optional">
+          <s:annotation>
+            <s:documentation>Amount of each scheduled payment.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="AccountStatus" type="s1:AccountStatusType" use="required">
+          <s:annotation>
+            <s:documentation>Current status of the loan.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="TransactionCode" type="s1:AlphanumericString" use="optional">
+          <s:annotation>
+            <s:documentation>Teletrack transaction code, if available.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="AccountNumber" type="s:string" use="required">
+          <s:annotation>
+            <s:documentation>Subscriber's reference number or loan number.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="PastDueAmount" type="s:decimal" use="optional">
+          <s:annotation>
+            <s:documentation>Total amount that the loan is past due.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="LastPaymentDate" type="s:date" use="optional">
+          <s:annotation>
+            <s:documentation>Date of the last actual payment.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="ActualPaymentAmount" type="s:decimal" use="optional">
+          <s:annotation>
+            <s:documentation>Amount of the latest payment.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="StateCode" type="s1:AlphabeticString" use="optional" />
+        <s:attribute name="ReasonCode" type="s:string" use="optional">
+          <s:annotation>
+            <s:documentation>Describes the extended reason for the account status, e.g. Account Sold, Bankruptcy, Consolidated, etc..</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="TransactionDatetime" type="s:dateTime" use="optional">
+          <s:annotation>
+            <s:documentation>The physical time of the actual user transaction, or when it entered the current status.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="PaymentMethod" use="optional">
+          <s:annotation>
+            <s:documentation>How the consumer pays the loan to the lender.</s:documentation>
+          </s:annotation>
+          <s:simpleType>
+            <s:restriction base="s:string">
+              <s:enumeration value="Check" />
+              <s:enumeration value="ACH" />
+              <s:enumeration value="Cash" />
+            </s:restriction>
+          </s:simpleType>
+        </s:attribute>
+        <s:attribute name="CheckNumber" type="s1:NumericalString" use="optional">
+          <s:annotation>
+            <s:documentation>The number of the check related to the loan.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="DelinquencyStatus" type="s:string" use="optional">
+          <s:annotation>
+            <s:documentation>"Current", "30 Days", "60 Days", "90 Days", "120 Days", "150 Days", "&gt;=180 Days"</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="DateOfFirstDelinquency" type="s:date" use="optional">
+          <s:annotation>
+            <s:documentation>This is a required field if the delinquency status is 30 days or higher.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="ECOAIndicator" type="s:string" use="optional">
+          <s:annotation>
+            <s:documentation>I = Individual, J = Joint Contractual Liability, M = Maker, T = Association Terminated, X = Deceased, U = Undesignated, Z = Delete Consumer.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="ComplianceConditionCode" type="s:string" use="optional">
+          <s:annotation>
+            <s:documentation>Blank, XA, XB, XC, XD, XE, XF, XG, XH,XJ, XR</s:documentation>
+          </s:annotation>
+        </s:attribute>
+        <s:attribute name="DateReported" type="s:date" use="optional">
+          <s:annotation>
+            <s:documentation>The date that the loan is reported.</s:documentation>
+          </s:annotation>
+        </s:attribute>
+      </s:complexType>
+      <s:complexType name="MetadataEntity">
+        <s:attribute name="Name" type="s:string" use="required" />
+        <s:attribute name="Value" type="s:string" use="optional" />
+      </s:complexType>
+    </s:schema>
+    <xs:schema xmlns="http://xml.teletrack.com/globals" attributeFormDefault="unqualified" elementFormDefault="qualified" targetNamespace="http://xml.teletrack.com/globals" version="1.2.6" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+      <xs:complexType name="RequestEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="RequestOption" type="s1:SettingEntity" />
+        </xs:sequence>
+        <xs:attribute name="RequestType" use="required">
+          <xs:annotation>
+            <xs:documentation>Describes in detail what the customer is requesting, "Inquiry", "ID Verification", "State".</xs:documentation>
+          </xs:annotation>
+          <xs:simpleType>
+            <xs:restriction base="xs:string">
+              <xs:enumeration value="Inquiry" />
+              <xs:enumeration value="Score" />
+              <xs:enumeration value="ID Verification" />
+              <xs:enumeration value="State" />
+              <xs:enumeration value="OFAC" />
+              <xs:enumeration value="Underwriting">
+                <xs:annotation>
+                  <xs:documentation>RequestOption:  "LoanTypeRequest".  Signifies whether the the request is for a payday loan or alternative loan.
+          Values:  Payday,  AlternativeLoan, AlternativeLoanIf90DayRule, PaydayAndAlternativeLoan</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="Text Report" />
+              <xs:enumeration value="Checking Data" />
+              <xs:enumeration value="Variables" />
+              <xs:enumeration value="Authentication Variables" />
+              <xs:enumeration value="Third Party Data">
+                <xs:annotation>
+                  <xs:documentation>RequestOptions include "Vendor" and "Product", as well as any vendor-specific options.</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+              <xs:enumeration value="NonFCRA">
+                <xs:annotation>
+                  <xs:documentation>RequestOptions include "IDOptix", "LeadOptix", etc.</xs:documentation>
+                </xs:annotation>
+              </xs:enumeration>
+            </xs:restriction>
+          </xs:simpleType>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="SubscriberEntity">
+        <xs:attribute name="SubscriberID" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>Teletrack-defined identifier for the customer.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UserName" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>The customer's UserName in the Teletrack system, used to identify individuals in the organization.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EndUser" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>An identifier for the end user (customer), used when the Subscriber is a reseller.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="SubscriberResponseEntity">
+        <xs:sequence>
+          <xs:element name="SubscriberAddress" type="s1:AddressEntity" />
+        </xs:sequence>
+        <xs:attribute name="SubscriberID" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>Teletrack-defined identifier for the customer.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="SubscriberName" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>Name of the customer.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ContactName" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>Contact name for the customer.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="PhoneNumber" type="s1:PhoneNumberType" use="optional">
+          <xs:annotation>
+            <xs:documentation>Phone number for the customer.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="FaxNumber" type="s1:PhoneNumberType" use="optional">
+          <xs:annotation>
+            <xs:documentation>Fax number for the customer.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="UserName" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>The customer's UserName in the Teletrack system, used to identify individuals in the organization.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EndUser" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>An identifier for the end user (customer), used when the Subscriber is a reseller.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="SoftwareEntity">
+        <xs:attribute name="VendorSoftwareID" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>Identifier for the software interface to Teletrack's XML system.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="VersionNumber" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>The version of the software interface.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="UINEntity">
+        <xs:annotation>
+          <xs:documentation>UINEntity describes a government-issued identity number.</xs:documentation>
+        </xs:annotation>
+        <xs:attribute default="SSN" name="Type" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>The type for UINEntity is "SSN" or "SIN" or "Passport" or any other type of government-issued identity number.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Uin" type="s1:UINType" use="required" />
+      </xs:complexType>
+      <xs:complexType name="PhoneEntity">
+        <xs:attribute name="CountryCode" type="xs:string" use="optional" />
+        <xs:attribute name="Number" type="s1:PhoneNumberType" use="required" />
+        <xs:attribute name="Extension" type="s1:PhoneNumberExtensionType" use="optional" />
+        <xs:attribute name="Type" type="s1:PhoneTypeCodeType" use="required">
+          <xs:annotation>
+            <xs:documentation>Type of phone number, e.g. "Home", "Work".</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:simpleType name="PhoneTypeCodeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Home" />
+          <xs:enumeration value="Mobile" />
+          <xs:enumeration value="Pager" />
+          <xs:enumeration value="Work" />
+          <xs:enumeration value="Fax" />
+          <xs:enumeration value="Other" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="PhoneNumberType">
+        <xs:restriction base="xs:string">
+          <xs:minLength value="4" />
+          <xs:maxLength value="15" />
+          <xs:pattern value="[0-9\. \-\(\)\+]+" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="PhoneNumberExtensionType">
+        <xs:restriction base="s1:NumericalString">
+          <xs:maxLength value="5" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:complexType name="DriversLicenseEntity">
+        <xs:attribute name="State" type="xs:string" use="required" />
+        <xs:attribute name="Number" type="xs:string" use="required" />
+      </xs:complexType>
+      <xs:complexType name="NameEntity">
+        <xs:attribute name="Prefix" type="xs:string" use="optional" />
+        <xs:attribute name="FirstName" type="xs:string" use="required" />
+        <xs:attribute name="MiddleName" type="xs:string" use="optional" />
+        <xs:attribute name="LastName" type="xs:string" use="required" />
+        <xs:attribute name="Suffix" type="xs:string" use="optional" />
+        <xs:attribute name="MaidenName" type="xs:string" use="optional" />
+      </xs:complexType>
+      <xs:complexType name="AddressEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="SimpleAddress" type="s1:SimpleAddressEntity" />
+          <xs:element minOccurs="0" name="POBoxAddress" type="s1:PoBoxAddressEntity" />
+          <xs:element minOccurs="0" name="ParsedAddress" type="s1:ParsedStreetAddressEntity" />
+        </xs:sequence>
+        <xs:attribute default="United States" name="Country" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>Country of the address.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="SimpleAddressEntity">
+        <xs:attribute name="Line1" type="xs:string" use="required" />
+        <xs:attribute name="Line2" type="xs:string" />
+        <xs:attribute name="City" type="xs:string" />
+        <xs:attribute name="State" type="xs:string" />
+        <xs:attribute name="PostalCode" type="xs:string" use="required" />
+      </xs:complexType>
+      <xs:complexType name="PoBoxAddressEntity">
+        <xs:attribute name="BoxNumber" type="xs:string" use="required" />
+        <xs:attribute name="City" type="xs:string" />
+        <xs:attribute name="State" type="xs:string" />
+        <xs:attribute name="PostalCode" type="xs:string" use="required" />
+      </xs:complexType>
+      <xs:complexType name="ParsedStreetAddressEntity">
+        <xs:attribute name="PreDirection" type="xs:string" />
+        <xs:attribute name="StreetNumber" type="xs:string" use="required" />
+        <xs:attribute name="StreetName" type="xs:string" use="required" />
+        <xs:attribute name="StreetType" type="xs:string" use="required" />
+        <xs:attribute name="PostDirection" type="xs:string" />
+        <xs:attribute name="UnitType" type="xs:string" />
+        <xs:attribute name="UnitNumber" type="xs:string" />
+        <xs:attribute name="City" type="xs:string" />
+        <xs:attribute name="State" type="xs:string" />
+        <xs:attribute name="PostalCode" type="xs:string" use="required" />
+      </xs:complexType>
+      <xs:complexType name="EmailEntity">
+        <xs:attribute name="EmailAddress" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>Email address should be in the format name@host.tld.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="EmailType" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>"Personal" or "Work"</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="IncomeEntity">
+        <xs:attribute name="Amount" type="xs:decimal" use="required" />
+        <xs:attribute name="PaymentFrequency" type="s1:PaymentFrequencyType" use="required">
+          <xs:annotation>
+            <xs:documentation>"Daily", "Weekly", "Biweekly", "Semimonthly", "Monthly"</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="PaymentMethod" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>"Check" or "Direct Deposit" or "ACH" or "Cash"</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="IncomeSource" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>Income Source does not need to be specified for a job, but in other cases might be "Alimony", "Disability", etc.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="BankAccountEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" name="Statement" type="s1:BankStatementEntity" />
+        </xs:sequence>
+        <xs:attribute name="BankName" type="xs:string" use="optional" />
+        <xs:attribute name="BankPhoneNumber" type="s1:PhoneNumberType" use="optional" />
+        <xs:attribute name="RoutingNumber" type="s1:NumericalString" use="optional" />
+        <xs:attribute name="AccountNumber" type="s1:NumericalString" use="optional" />
+        <xs:attribute default="Checking" name="AccountType" type="s1:AccountTypeType" use="optional">
+          <xs:annotation>
+            <xs:documentation>"Checking", "Savings", "Money Market", "Other".</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute default="Single" name="Ownership" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>Ownership is "Single" or "Joint".</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CheckNumber" type="s1:NumericalString" use="optional" />
+        <xs:attribute name="IsPresenterOnSite" type="xs:boolean" use="optional" />
+        <xs:attribute name="CheckAmount" type="xs:decimal" use="optional" />
+        <xs:attribute name="FractionalForm" type="xs:string" use="optional" />
+      </xs:complexType>
+      <xs:complexType name="BankStatementEntity">
+        <xs:attribute name="StatementDate" type="xs:date" use="optional" />
+        <xs:attribute name="NumberOfTransactions" type="xs:int" use="optional" />
+        <xs:attribute default="0" name="NumberOfNSFs" type="xs:int" use="optional" />
+        <xs:attribute name="Balance" type="xs:decimal" use="optional" />
+      </xs:complexType>
+      <xs:complexType name="AccountEntity">
+        <xs:annotation>
+          <xs:documentation>Describes the details of an account.</xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="History" type="s1:AccountHistoryEntity" />
+        </xs:sequence>
+        <xs:attribute name="LenderName" type="xs:string" use="required">
+          <xs:annotation>
+            <xs:documentation>Name of the lender.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="AccountType" type="s1:LoanTypeType" use="required">
+          <xs:annotation>
+            <xs:documentation>Payday loan vs installment, etc.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="AccountStatus" type="s1:AccountStatusType" use="required">
+          <xs:annotation>
+            <xs:documentation>Current status of the account or loan.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="StatusDate" type="xs:date" use="required">
+          <xs:annotation>
+            <xs:documentation>Date the last status was reported.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="AccountIdentifier" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>The account number assigned to the account.  Truncated.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="AccountOwnership" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>Typically "Single" or "Joint".</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="OpenDate" type="xs:date" use="required">
+          <xs:annotation>
+            <xs:documentation>Date the account or loan was opened.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ClosedDate" type="xs:date" use="optional">
+          <xs:annotation>
+            <xs:documentation>Date the account or loan was closed.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="OriginalBalance" type="xs:decimal" use="required">
+          <xs:annotation>
+            <xs:documentation>Original loan amount, including any fees.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CurrentBalance" type="xs:decimal" use="required">
+          <xs:annotation>
+            <xs:documentation>Current amount due.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="HighBalanceAmount" type="xs:decimal" use="optional">
+          <xs:annotation>
+            <xs:documentation>The highest balance recorded for the account.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="CreditLimit" type="xs:decimal" use="optional">
+          <xs:annotation>
+            <xs:documentation>The credit limit for the account.  Applies to revolving or credit line accounts.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DueDate" type="xs:date" use="optional">
+          <xs:annotation>
+            <xs:documentation>Date the loan is due.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ScheduledPaymentAmount" type="xs:decimal" use="optional">
+          <xs:annotation>
+            <xs:documentation>The amount the consumer is scheduled to pay.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="NumberOfPaymentsScheduled" type="xs:int" use="optional">
+          <xs:annotation>
+            <xs:documentation>Number of payments scheduled for the loan.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="PaymentFrequency" type="s1:PaymentFrequencyType" use="optional">
+          <xs:annotation>
+            <xs:documentation>How often the payments are made.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DelinquencyStatus" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>"Current", "30 Days", "60 Days", "90 Days", "120 Days", "150 Days", "&gt;=180 Days"</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DateOfFirstDelinquency" type="xs:date" use="optional">
+          <xs:annotation>
+            <xs:documentation>This is a required field if the delinquency status is 30 days or higher.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ECOAIndicator" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>I = Individual, J = Joint Contractual Liability, M = Maker, T = Association Terminated, X = Deceased, U = Undesignated, Z = Delete Consumer.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="ComplianceConditionCode" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>Blank, XA, XB, XC, XD, XE, XF, XG, XH,XJ, XR</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="DateReported" type="xs:date" use="optional">
+          <xs:annotation>
+            <xs:documentation>The date that the loan is reported.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="AccountHistoryEntity">
+        <xs:annotation>
+          <xs:documentation>Describes the history of an account.</xs:documentation>
+        </xs:annotation>
+        <xs:attribute name="Date" type="xs:date" use="required">
+          <xs:annotation>
+            <xs:documentation>Date of the history item.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="Status" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>How current the account is, e.g. "Current", "Past Due", "30 Days Past Due", etc.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+        <xs:attribute name="AccountBalance" type="xs:decimal" use="required">
+          <xs:annotation>
+            <xs:documentation>Balance of the account on the date.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="ContactEntity">
+        <xs:attribute name="ContactName" type="xs:string" />
+        <xs:attribute name="Phone" type="s1:PhoneNumberType" />
+      </xs:complexType>
+      <xs:complexType name="TeletrackScoreEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ScoreReasonCode">
+            <xs:complexType>
+              <xs:attribute name="ScoreCode" type="xs:string" use="required" />
+              <xs:attribute name="Description" type="xs:string" use="required" />
+            </xs:complexType>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Range" type="xs:string" use="required" />
+        <xs:attribute name="Score" type="xs:int" use="required" />
+        <xs:attribute name="RecordType" type="xs:string" use="optional">
+          <xs:annotation>
+            <xs:documentation>Valid values are "NR" No Record, "IQ" Inquiries Only, "PR" Public Record Only, and "FR" Full Record.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="FICOScoreEntity">
+        <xs:sequence>
+          <xs:element minOccurs="0" maxOccurs="unbounded" name="ScoreReasonCode" type="xs:string">
+            <xs:annotation>
+              <xs:documentation>The score factor codes returned by the bureau.</xs:documentation>
+            </xs:annotation>
+          </xs:element>
+        </xs:sequence>
+        <xs:attribute name="Score" type="xs:int" use="required">
+          <xs:annotation>
+            <xs:documentation>The commercial bureau FICO score for this transaction.</xs:documentation>
+          </xs:annotation>
+        </xs:attribute>
+      </xs:complexType>
+      <xs:complexType name="TransactionErrorDetailsEntity">
+        <xs:simpleContent>
+          <xs:extension base="xs:string">
+            <xs:attribute form="unqualified" name="ErrorCode" type="xs:string" />
+          </xs:extension>
+        </xs:simpleContent>
+      </xs:complexType>
+      <xs:complexType name="SettingEntity">
+        <xs:attribute form="unqualified" name="Name" type="xs:string" use="required" />
+        <xs:attribute form="unqualified" name="Value" type="xs:string" />
+      </xs:complexType>
+      <xs:simpleType name="LoanTypeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="AutoEquity" />
+          <xs:enumeration value="Installment" />
+          <xs:enumeration value="SimpleInterest" />
+          <xs:enumeration value="Payday" />
+          <xs:enumeration value="Revolving" />
+          <xs:enumeration value="" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="AccountTypeType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Checking" />
+          <xs:enumeration value="Savings" />
+          <xs:enumeration value="Money Market" />
+          <xs:enumeration value="Other" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="PaymentFrequencyType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Daily" />
+          <xs:enumeration value="Weekly" />
+          <xs:enumeration value="Biweekly" />
+          <xs:enumeration value="Semimonthly" />
+          <xs:enumeration value="Monthly" />
+          <xs:enumeration value="Quarterly" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="AccountStatusType">
+        <xs:restriction base="xs:string">
+          <xs:enumeration value="Active" />
+          <xs:enumeration value="Paid" />
+          <xs:enumeration value="Chargeoff" />
+          <xs:enumeration value="Past Due" />
+          <xs:enumeration value="Transferred">
+            <xs:annotation>
+              <xs:documentation>Loan has been transferred or sold.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Void" />
+          <xs:enumeration value="Rescinded">
+            <xs:annotation>
+              <xs:documentation>For some state systems.  Same as Void but distinguished as subscriber-generated cancellation.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="NSF">
+            <xs:annotation>
+              <xs:documentation>For some state systems.  Reopened due to NSF.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+          <xs:enumeration value="Open">
+            <xs:annotation>
+              <xs:documentation>For some state systems.  Open and still active.</xs:documentation>
+            </xs:annotation>
+          </xs:enumeration>
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="NumericalString">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[0-9]+" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="AlphanumericString">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[0-9A-Za-z]+" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="AlphabeticString">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[A-Za-z]+" />
+        </xs:restriction>
+      </xs:simpleType>
+      <xs:simpleType name="UINType">
+        <xs:restriction base="xs:string">
+          <xs:pattern value="[0-9\- \.]+" />
+        </xs:restriction>
+      </xs:simpleType>
+    </xs:schema>
+  </wsdl:types>
+  <wsdl:message name="ReportDataSoapIn">
+    <wsdl:part name="parameters" element="tns:ReportData" />
+  </wsdl:message>
+  <wsdl:message name="ReportDataSoapOut">
+    <wsdl:part name="parameters" element="tns:ReportDataResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ReportingSoap">
+    <wsdl:operation name="ReportData">
+      <wsdl:input message="tns:ReportDataSoapIn" />
+      <wsdl:output message="tns:ReportDataSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ReportingSoap" type="tns:ReportingSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ReportData">
+      <soap:operation soapAction="http://xml.teletrack.com/reporting/ReportData" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ReportingSoap12" type="tns:ReportingSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="ReportData">
+      <soap12:operation soapAction="http://xml.teletrack.com/reporting/ReportData" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="Reporting">
+    <wsdl:port name="ReportingSoap" binding="tns:ReportingSoap">
+      <soap:address location="https://xmltest.teletrack.com/reporting.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ReportingSoap12" binding="tns:ReportingSoap12">
+      <soap12:address location="https://xmltest.teletrack.com/reporting.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

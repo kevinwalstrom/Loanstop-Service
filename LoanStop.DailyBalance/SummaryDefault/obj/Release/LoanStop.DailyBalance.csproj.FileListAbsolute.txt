@@ -1,0 +1,13 @@
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\LoanStop.DailyBalance.dll.config
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\LoanStop.DailyBalance.dll
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\LoanStop.DailyBalance.pdb
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\LoanStop.DBCore.dll
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\LoanStop.Entities.dll
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\MySql.Data.dll
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\EntityFramework.dll
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\LoanStop.DBCore.pdb
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\LoanStop.Entities.pdb
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\bin\Release\EntityFramework.xml
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\obj\Release\LoanStop.DailyBalance.csprojResolveAssemblyReference.cache
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\obj\Release\LoanStop.DailyBalance.dll
+D:\GitHub\loanstop\LoanStop.DailyBalance\SummaryDefault\obj\Release\LoanStop.DailyBalance.pdb
