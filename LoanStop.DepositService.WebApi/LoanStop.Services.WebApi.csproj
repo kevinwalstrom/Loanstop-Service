@@ -287,43 +287,43 @@
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Service\LoanStop.ACHFile\LoanStop.ACHFile.csproj">
+    <ProjectReference Include="..\LoanStop.ACHFile\LoanStop.ACHFile.csproj">
       <Project>{947cf5e5-8729-4af9-93ed-f7a8cfe6281f}</Project>
       <Name>LoanStop.ACHFile</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Service\LoanStop.ACHWorks\LoanStop.ACHWorks.csproj">
+    <ProjectReference Include="..\LoanStop.ACHWorks\LoanStop.ACHWorks.csproj">
       <Project>{9bb0846e-4679-4ba8-98ea-09e10dbef5b7}</Project>
       <Name>LoanStop.ACHWorks</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Service\LoanStop.DailyBalance\SummaryDefault\LoanStop.DailyBalance.csproj">
+    <ProjectReference Include="..\LoanStop.DailyBalance\SummaryDefault\LoanStop.DailyBalance.csproj">
       <Project>{bb8860f5-15c8-4559-aae5-b0f5281ff30c}</Project>
       <Name>LoanStop.DailyBalance</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Service\LoanStop.DBCore\LoanStop.DBCore.csproj">
+    <ProjectReference Include="..\LoanStop.DBCore\LoanStop.DBCore.csproj">
       <Project>{86d86847-4c51-4aaf-a3b9-1f5b5e5b0648}</Project>
       <Name>LoanStop.DBCore</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Service\LoanStop.DepositService.Core\LoanStop.DepositService.Core.csproj">
+    <ProjectReference Include="..\LoanStop.DepositService.Core\LoanStop.DepositService.Core.csproj">
       <Project>{88b1aa11-ca91-4737-be97-d7f375a90f08}</Project>
       <Name>LoanStop.DepositService.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Service\LoanStop.DepositService.Entities\LoanStop.DepositService.Entities.csproj">
+    <ProjectReference Include="..\LoanStop.DepositService.Entities\LoanStop.DepositService.Entities.csproj">
       <Project>{d705a54a-692f-43f5-96dc-c7748e5b5ff7}</Project>
       <Name>LoanStop.DepositService.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Service\LoanStop.Entities\LoanStop.Entities.csproj">
+    <ProjectReference Include="..\LoanStop.Entities\LoanStop.Entities.csproj">
       <Project>{b8f88925-79cc-416e-a5ac-8fe297c127ce}</Project>
       <Name>LoanStop.Entities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Service\LoanStop.Reports\LoanStop.Reports.csproj">
+    <ProjectReference Include="..\LoanStop.Reports\LoanStop.Reports.csproj">
       <Project>{d8667802-040b-4d7d-b4e2-5c5be99cf826}</Project>
       <Name>LoanStop.Reports</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Service\LoanStop.TeleTrackClient\LoanStop.TeleTrackClient.csproj">
+    <ProjectReference Include="..\LoanStop.TeleTrackClient\LoanStop.TeleTrackClient.csproj">
       <Project>{9757c392-dd69-4b89-8590-85ac01657837}</Project>
       <Name>LoanStop.TeleTrackClient</Name>
     </ProjectReference>
-    <ProjectReference Include="..\..\Service\LoanStop.Transactions\LoanStop.Transactions.csproj">
+    <ProjectReference Include="..\LoanStop.Transactions\LoanStop.Transactions.csproj">
       <Project>{5347c673-2d8f-4fe3-a4b3-8d6f5b03629d}</Project>
       <Name>LoanStop.Transactions</Name>
     </ProjectReference>

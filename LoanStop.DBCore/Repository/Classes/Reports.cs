@@ -764,79 +764,7 @@ namespace LoanStop.DBCore.Repository
         #endregion 
 
 
-        public List<object> LoansCashLogDetail(DateTime startDate, DateTime endDate)
-        {
-            List<object> returnValue = new List<object>();
 
-            string command = string.Format(
-            @"
-            select transaction_number as id, payable_to as name, amount
-            from cash_log 
-            where type = 'debit'
-            and description <> 'Void'
-            and `date` between '{0}' AND '{1}'
-            and transaction_type = 'loan'    
-            order by transaction_number  
-            ",
-            startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
-
-            command = command.Replace("\r\n", "");
-            command = command.Replace("\n", "");
-
-            using (MySqlDataReader reader = MySqlHelper.ExecuteReader(connectionString, command))
-            {
-                while (reader.Read())
-                {
-                    var obj = new
-                    {
-                        id = reader["id"].ToString(),
-                        name = reader["name"].ToString(),
-                        amount = decimal.Parse(reader["amount"].ToString())
-                    };
-
-                    returnValue.Add(obj);
-                }
-                reader.Close();
-            }
-
-            return returnValue;
-        }
-
-        public List<object> LoandsTransactionsDetail(DateTime startDate, DateTime endDate)
-        {
-            List<object> returnValue = new List<object>();
-
-            string command = string.Format(
-            @"
-            select id, name, amount_dispursed, status
-            from transactions 
-            where check_type = 0
-            and `trans_date` between '{0}' AND '{1}'
-            order by id  
-            ",
-            startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
-
-            command = command.Replace("\r\n", "");
-
-            using (MySqlDataReader reader = MySqlHelper.ExecuteReader(connectionString, command))
-            {
-                while (reader.Read())
-                {
-                    var obj = new
-                    {
-                        id = reader["id"].ToString(),
-                        name = reader["name"].ToString(),
-                        amount = decimal.Parse(reader["amount_dispursed"].ToString()),
-                        status = reader["status"].ToString()
-                    };
-
-                    returnValue.Add(obj);
-                }
-                reader.Close();
-            }
-
-            return returnValue;
-        }
 
 
         public decimal CashTransactionsCredits(DateTime startDate, DateTime endDate)

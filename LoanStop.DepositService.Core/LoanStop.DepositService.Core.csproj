@@ -90,7 +90,7 @@
     <Compile Include="TeleTrack.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\Service\LoanStop.DBCore\LoanStop.DBCore.csproj">
+    <ProjectReference Include="..\LoanStop.DBCore\LoanStop.DBCore.csproj">
       <Project>{86d86847-4c51-4aaf-a3b9-1f5b5e5b0648}</Project>
       <Name>LoanStop.DBCore</Name>
     </ProjectReference>

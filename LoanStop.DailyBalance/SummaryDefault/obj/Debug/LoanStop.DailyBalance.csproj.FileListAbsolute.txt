@@ -38,3 +38,17 @@ C:\GitHub\loanstop\Service\LoanStop.DailyBalance\SummaryDefault\obj\Debug\LoanSt
 C:\GitHub\loanstop\Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\MySql.Data.dll
 C:\GitHub\loanstop\Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\EntityFramework.xml
 C:\GitHub\loanstop\Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\MySql.Data.Entity.EF5.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\LoanStop.DailyBalance.dll.config
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\LoanStop.DailyBalance.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\LoanStop.DailyBalance.pdb
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\EntityFramework.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\LoanStop.DBCore.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\LoanStop.Entities.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\MySql.Data.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\MySql.Data.Entity.EF5.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\LoanStop.DBCore.pdb
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\LoanStop.Entities.pdb
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\bin\Debug\EntityFramework.xml
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\obj\Debug\LoanStop.DailyBalance.csprojResolveAssemblyReference.cache
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\obj\Debug\LoanStop.DailyBalance.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.DailyBalance\SummaryDefault\obj\Debug\LoanStop.DailyBalance.pdb

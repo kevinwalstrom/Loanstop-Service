@@ -37,3 +37,16 @@ C:\GitHub\loanstop\Service\LoanStop.ACHFile\obj\Debug\LoanStop.ACHFile.csprojRes
 C:\GitHub\loanstop\Service\LoanStop.ACHFile\obj\Debug\LoanStop.ACHFile.dll
 C:\GitHub\loanstop\Service\LoanStop.ACHFile\obj\Debug\LoanStop.ACHFile.pdb
 C:\GitHub\loanstop\Service\LoanStop.ACHFile\bin\Debug\EntityFramework.xml
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\LoanStop.ACHFile.dll.config
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\LoanStop.ACHFile.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\LoanStop.ACHFile.pdb
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\LoanStop.DBCore.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\LoanStop.Entities.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\MySql.Data.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\EntityFramework.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\LoanStop.DBCore.pdb
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\LoanStop.Entities.pdb
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\bin\Debug\EntityFramework.xml
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\obj\Debug\LoanStop.ACHFile.csprojResolveAssemblyReference.cache
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\obj\Debug\LoanStop.ACHFile.dll
+C:\Users\kwalstrom\Documents\GitHub\Loanstop-Service\LoanStop.ACHFile\obj\Debug\LoanStop.ACHFile.pdb

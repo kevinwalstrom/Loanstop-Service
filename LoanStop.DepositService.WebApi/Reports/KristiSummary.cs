@@ -126,28 +126,6 @@ namespace LoanStop.Services.WebApi.Reports
 
         }
 
-
-
-        public KristiSummaryStoreClass Detail(string category, DateTime startDate, DateTime endDate)
-        {
-
-            KristiSummaryStoreClass rtrn = new KristiSummaryStoreClass();
-
-            DateTime undepositedDate = DateTime.Today;
-
-            var connection = Connections.FirstOrDefault();
-
-            var currentStore = new KristiSummaryStoreClass();
-
-            rtrn.ledger.loans = LoansCashLogDetail(connection, startDate, endDate);
-
-            rtrn.transactions.loans = LoansTransactionsDetail(connection, startDate, endDate);
-
-            return rtrn;
-
-        }
-
-
         #region "summary"
         private decimal LoansMade(StoreConnectionType connection, DateTime startDate, DateTime endDate)
         {
@@ -329,43 +307,6 @@ namespace LoanStop.Services.WebApi.Reports
 
 
         #endregion
-
-        #region "store detail"
-
-        private List<object> LoansCashLogDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
-        {
-            var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
-
-            List<object> rtrn = null;
-
-            DateTime tempEndDate = endDate;
-            if (startDate == endDate)
-                tempEndDate = startDate.AddDays(1);
-
-            rtrn = Reports.LoansCashLogDetail(startDate, tempEndDate);
-
-            return rtrn;
-        }
-
-        private List<object> LoansTransactionsDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
-        {
-            var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
-
-            List<object> rtrn = null;
-
-            DateTime tempEndDate = endDate;
-            if (startDate == endDate)
-                tempEndDate = startDate.AddDays(1);
-
-            rtrn = Reports.LoandsTransactionsDetail(startDate, tempEndDate);
-
-            return rtrn;
-        }
-
-
-        #endregion
-
-
 
     }
 

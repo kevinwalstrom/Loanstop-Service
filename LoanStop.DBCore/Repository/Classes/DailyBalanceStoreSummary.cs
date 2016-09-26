@@ -148,7 +148,7 @@ namespace LoanStop.DBCore.Repository
                 string command = string.Format(
                     @"SELECT SUM(amount_dispursed) 
                       FROM transactions 
-                      WHERE date_cleared BETWEEN '{0}' AND '{1}'
+                      WHERE trans_date BETWEEN '{0}' AND '{1}'
                         AND (status <> 'Void') AND (check_type=1)
                     ", startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
 
@@ -162,7 +162,6 @@ namespace LoanStop.DBCore.Repository
 
             return returnValue.HasValue ? returnValue.Value : 0m;
         }
-
 
         public decimal CashLogPayments(DateTime startDate, DateTime endDate)
         {
@@ -226,8 +225,6 @@ namespace LoanStop.DBCore.Repository
 
             return returnValue.HasValue ? returnValue.Value : 0m;
         }
-
-
 
 
     }
