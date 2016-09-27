@@ -73,7 +73,7 @@ namespace LoanStop.DBCore.Repository
                 string command = string.Format(
                     @"SELECT SUM(amount_dispursed) 
                       FROM transactions 
-                      WHERE date_cleared BETWEEN '{0}' AND '{1}'
+                      WHERE trans_date >= '{0}' AND trans_date < '{1}'
                         AND (status <> 'Void') AND (check_type=1)
                     ", startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
 

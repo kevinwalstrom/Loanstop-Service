@@ -178,6 +178,7 @@
     <Compile Include="PartialModels\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Classes\AuxClient.cs" />
+    <Compile Include="Repository\Classes\CardTransactions.cs" />
     <Compile Include="Repository\Classes\CashLog.cs" />
     <Compile Include="Repository\Classes\Checkbook.cs" />
     <Compile Include="Repository\Classes\Client.cs" />

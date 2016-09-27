@@ -2514,7 +2514,7 @@ namespace LoanStopModel
         /// <summary>
         /// There are no comments for TransactionId in the schema.
         /// </summary>
-        public virtual int TransactionId
+        public virtual long TransactionId
         {
             get;
             set;

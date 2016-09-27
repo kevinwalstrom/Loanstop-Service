@@ -49,6 +49,44 @@ namespace LoanStop.Services.WebApi.Controllers
         }
 
         [HttpGet]
+        [Route("api/paymenttable/{state}/{store}/{transactionId}")]
+        public ResponseType PaymentTable(string state, string store, long transactionId)
+        {
+            var response = new ResponseType();
+
+            var connectionString = Connections.Items.Where(s => s.DatabaseName.ToLower() == store.ToLower()).FirstOrDefault().ConnectionString();
+
+            var defaults = Defaults.Items.Where(s => s.Store == store).FirstOrDefault();
+
+            var exe = new Transaction(store, connectionString, defaults);
+
+            var result = exe.PaymentTable(transactionId);
+
+            response.Item = result;
+
+            return response;
+        }
+
+        [HttpPost]
+        [Route("api/moneygram/{state}/{store}")]
+        public ResponseType MoneyGram(string state, string store, MoneyGramModel model)
+        {
+            var response = new ResponseType();
+
+            var connectionString = Connections.Items.Where(s => s.DatabaseName.ToLower() == store.ToLower()).FirstOrDefault().ConnectionString();
+
+            var defaults = Defaults.Items.Where(s => s.Store == store).FirstOrDefault();
+
+            var exe = new Transaction(store, connectionString, defaults);
+
+            var result = exe.MoneyGram(model);
+
+            response.Item = result;
+
+            return response;
+        }
+
+        [HttpGet]
         [Route("api/GetPaymentPlanRecords/{state}/{store}/{transactionId}")]
         public ResponseType GetPaymentPlanRecords(string state, string store, long transactionId)
         {
