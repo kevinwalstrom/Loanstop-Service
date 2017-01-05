@@ -28,24 +28,18 @@ namespace LoanStop.Services.WebApi.Reports
 
             foreach (var connection in Connections)
             {
+
                 var currentStore = new KristiSummaryClass();
                 currentStore.LoansMade = LoansMade(connection, startDate, endDate);
                 currentStore.CashedChecks = CashedChecks(connection, startDate, endDate);
                 currentStore.Payments = Payments(connection, startDate, endDate);
-
-
                 currentStore.LoansPaid = LoansPaid(connection, startDate, endDate);
-
                 currentStore.Bounced = Bounced(connection, startDate, endDate);
                 currentStore.Expenses = Expenses(connection, startDate, endDate);
-
                 currentStore.CashLogCredits = CashLogCredits(connection, startDate, endDate);
                 currentStore.CashLogDebits = CashLogDebits(connection, startDate, endDate);
-                //currentStore.CashTransactionsCredits = CashTransactionsCredits(connection, startDate, endDate);
-                //currentStore.CashTransactionsDebits = CashTransactionsDebits(connection, startDate, endDate);
-
-
                 stores.Add(currentStore);
+
             }
 
             var loansMade = new List<decimal>();
@@ -178,7 +172,7 @@ namespace LoanStop.Services.WebApi.Reports
 
             decimal rtrn = 0;
 
-            rtrn = Reports.Payments(startDate, endDate);
+            rtrn = Reports.Payments(startDate, endDate, connection.State);
 
             return rtrn;
         }
@@ -229,8 +223,7 @@ namespace LoanStop.Services.WebApi.Reports
         {
             var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
 
-            List<CashLogCreditsDebitsEntity> rtrn = Reports.CashLogCredits(startDate, endDate);
-            //rtrn.
+            List<CashLogCreditsDebitsEntity> rtrn = Reports.CashLogCredits(startDate, endDate, connection.State);
 
             return rtrn;
         }

@@ -73,7 +73,7 @@ namespace LoanStop.DBCore.Repository
                 string command = string.Format(
                     @"SELECT SUM(amount_dispursed) 
                       FROM transactions 
-                      WHERE date_cleared BETWEEN '{0}' AND '{1}'
+                      WHERE trans_date >= '{0}' AND trans_date < '{1}'
                         AND (status <> 'Void') AND (check_type=1)
                     ", startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
 
@@ -88,27 +88,59 @@ namespace LoanStop.DBCore.Repository
             return returnValue.Value;
         }
 
-        public decimal Payments(DateTime startDate, DateTime endDate)
+        public decimal Payments(DateTime startDate, DateTime endDate, string state)
         {
             decimal? returnValue = 0;
             using (var db = new Entity.LoanStopEntities(connectionString))
             {
-                string command = string.Format(
-                    @"SELECT sum(a.amount) as amount from (
-                        SELECT (SUM(amount_paid) + SUM(balance)) as amount
+                string command = null;
+                if (state.ToLower() == "colorado")
+                {
+                    command = string.Format(
+                        @"SELECT sum(a.amount) as amount from (
+                        (SELECT transaction_id as id, (amount_paid + balance) as amount
                         FROM payments 
                         WHERE date_paid BETWEEN '{0}' AND '{1}'
                             AND ((description <> 'Deposit Payment')	AND description <> 'DEPOSIT SERVICE' AND description <> 'NSF')
-                            AND (ss_number <> '222-22-2222')
-                        union 
-	                        SELECT amount_recieved as amount 
+                            AND (ss_number <> '222-22-2222'))
+                        union all
+	                        (SELECT id, amount_recieved as amount
                             FROM transactions 
                                 where date_cleared BETWEEN '{2}' AND '{3}'
-		                        AND status = 'Pd Cash'
+		                        AND status = 'Pd Cash')
                     ) as a
                     ",
-                startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"),
-                startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
+                    startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"),
+                    startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
+                }
+                else
+                {
+                    command = string.Format(
+                        @"SELECT sum(a.amount) as amount from (
+
+                            (SELECT transaction_id as id, (amount_paid) as amount
+                            FROM payments 
+                            WHERE date_paid BETWEEN '{0}' AND '{1}'
+                                AND ((description <> 'Deposit Payment')	AND description <> 'DEPOSIT SERVICE' AND description <> 'NSF')
+                                AND (ss_number <> '222-22-2222')
+                                AND amount_paid > 0)
+                            UNION all
+                            (SELECT id, amount_recieved as amount 
+                            FROM transactions 
+                                where date_cleared BETWEEN '{2}' AND '{3}'
+		                        AND status = 'Pd Cash')
+                            union 
+	                        (SELECT id, amount_recieved as amount 
+                            FROM payment_plan_checks 
+                                where date_paid BETWEEN '{4}' AND '{5}'
+		                        AND status = 'Pd Cash')
+                    ) as a
+                    ",
+                    startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"),
+                    startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"),
+                    startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
+
+                }
 
                 command = command.Replace("\r\n", "");
                 command = command.Replace("\n", "");

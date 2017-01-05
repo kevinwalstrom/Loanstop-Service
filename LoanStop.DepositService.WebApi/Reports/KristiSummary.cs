@@ -139,9 +139,38 @@ namespace LoanStop.Services.WebApi.Reports
 
             var currentStore = new KristiSummaryStoreClass();
 
-            rtrn.ledger.loans = LoansCashLogDetail(connection, startDate, endDate);
+            switch (category.ToLower())
+            {
+                case "loan":
+                    rtrn.ledger.amounts = LoansCashLogDetail(connection, startDate, endDate);
 
-            rtrn.transactions.loans = LoansTransactionsDetail(connection, startDate, endDate);
+                    rtrn.transactions.amounts = LoansTransactionsDetail(connection, startDate, endDate);
+
+                    break;
+                case "cashedchecks":
+
+                    rtrn.ledger.amounts = LoansCashLogDetail(connection, startDate, endDate);
+
+                    rtrn.transactions.amounts = LoansTransactionsDetail(connection, startDate, endDate);
+
+                    break;
+                case "payments":
+
+                    rtrn.ledger.amounts = PaymentsCashLogDetail(connection, startDate, endDate);
+
+                    rtrn.transactions.amounts = PaymentsTransactionsDetail(connection, startDate, endDate);
+
+                    break;
+
+                default:
+
+                    rtrn.ledger.amounts = LoansCashLogDetail(connection, startDate, endDate);
+
+                    rtrn.transactions.amounts = LoansTransactionsDetail(connection, startDate, endDate);
+
+                    break;
+            }
+
 
             return rtrn;
 
@@ -285,7 +314,7 @@ namespace LoanStop.Services.WebApi.Reports
         {
             var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
 
-            List<CashLogCreditsDebitsEntity> rtrn = Reports.CashLogCredits(startDate, endDate);
+            List<CashLogCreditsDebitsEntity> rtrn = Reports.CashLogCredits(startDate, endDate, connection.State);
             //rtrn.
 
             return rtrn;
@@ -362,6 +391,37 @@ namespace LoanStop.Services.WebApi.Reports
             return rtrn;
         }
 
+        private List<object> PaymentsCashLogDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
+        {
+            var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
+
+            List<object> rtrn = null;
+
+            DateTime tempEndDate = endDate;
+            if (startDate == endDate)
+                tempEndDate = startDate.AddDays(1);
+
+            rtrn = Reports.PaymentsCashLogDetail(startDate, tempEndDate);
+
+            return rtrn;
+        }
+
+        private List<object> PaymentsTransactionsDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
+        {
+            var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
+
+            List<object> rtrn = null;
+
+            DateTime tempEndDate = endDate;
+            if (startDate == endDate)
+                tempEndDate = startDate.AddDays(1);
+
+            rtrn = Reports.PaymentsTransactionsDetail(startDate, tempEndDate, connection.State);
+
+            return rtrn;
+        }
+
+
 
         #endregion
 
@@ -420,6 +480,9 @@ namespace LoanStop.Services.WebApi.Reports
         public object depositsWithdrawals { get; set; }
         public object corprate { get; set; }
         public object voided { get; set; }
+
+        public object amounts { get; set; }
+
     }
 
 

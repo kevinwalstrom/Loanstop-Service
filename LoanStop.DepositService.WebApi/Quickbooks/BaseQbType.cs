@@ -102,30 +102,30 @@ namespace LoanStop.Services.WebApi.Quickbooks
                     bankName2 = "Littleton";
                     break;
                 case "casper":
-                    bankAccount = "1040";
-                    bankAccount2 = "1040";
+                    bankAccount = "1041";
+                    bankAccount2 = "1042";
                     cashAccount = "1045";
                     classNumber = "04 Casper";
                     storeName = "Casper";
-                    bankName = "Casper";
-                    bankName2 = "Casper";
+                    bankName = "Casper - Hilltop";
+                    bankName2 = "Casper Corporate - Hilltop";
                     break;
                 case "cheyenne":
-                    bankAccount = "1050";
+                    bankAccount = "1051";
                     bankAccount2 = "1050";
                     cashAccount = "1055";
                     classNumber = "05 Cheyenne";
                     storeName = "Cheyenne";
-                    bankName = "Cheyenne";
+                    bankName = "Cheyenne - Vectra";
                     bankName2 = "Cheyenne";
                     break;
                 case "laramie":
-                    bankAccount = "1100";
+                    bankAccount = "1101";
                     bankAccount2 = "1100";
                     cashAccount = "1105";
                     classNumber = "10 Laramie";
                     storeName = "Laramie";
-                    bankName = "Laramie";
+                    bankName = "Laramie - Vectra";
                     bankName2 = "Laramie";
                     break;
                 case "gillette":
@@ -138,12 +138,12 @@ namespace LoanStop.Services.WebApi.Quickbooks
                     bankName2 = "Gillette";
                     break;
                 case "rocksprings":
-                    bankAccount = "1130";
+                    bankAccount = "1131";
                     bankAccount2 = "1130";
                     cashAccount = "1135";
                     classNumber = "13 Rock Springs";
                     storeName = "Rock Springs";
-                    bankName = "Rock Springs";
+                    bankName = "Rock Springs - Vectra";
                     bankName2 = "Rock Springs";
                     break;
                 case "closed_stores":

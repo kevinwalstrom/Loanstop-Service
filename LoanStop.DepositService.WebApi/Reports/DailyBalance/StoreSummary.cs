@@ -110,7 +110,7 @@ namespace LoanStop.Services.WebApi.Reports
 
             decimal rtrn = 0;
 
-            rtrn = Reports.TransactionPayments(startDate, endDate);
+            rtrn = Reports.TransactionPayments(startDate, endDate, connection.State);
 
             return rtrn;
         }
