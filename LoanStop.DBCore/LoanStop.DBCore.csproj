@@ -178,12 +178,14 @@
     <Compile Include="PartialModels\Transaction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repository\Classes\AuxClient.cs" />
+    <Compile Include="Repository\Classes\CardTransactions.cs" />
     <Compile Include="Repository\Classes\CashLog.cs" />
     <Compile Include="Repository\Classes\Checkbook.cs" />
     <Compile Include="Repository\Classes\Client.cs" />
     <Compile Include="Repository\Classes\Collect.cs" />
     <Compile Include="Repository\Classes\Colorado.cs" />
     <Compile Include="Repository\Classes\ColoradoAudit.cs" />
+    <Compile Include="Repository\Classes\DailyBalanceDetail.cs" />
     <Compile Include="Repository\Classes\DailyBalanceStoreSummary.cs" />
     <Compile Include="Repository\Classes\DailyBalanceSummary.cs" />
     <Compile Include="Repository\Classes\Payment.cs" />

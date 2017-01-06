@@ -35,6 +35,8 @@ namespace LoanStop.Transactions
         protected Repository.Collect collectRepository;
         protected Repository.CashLog cashRepository;
         protected Repository.Tracking trackingRepository;
+        protected Repository.CardTransactions cardRepository;
+
 
         protected long paymentPlanCheckId;
 
@@ -58,6 +60,7 @@ namespace LoanStop.Transactions
             checkbookRepository = new Repository.Checkbook(connectionString);
             collectRepository = new Repository.Collect(connectionString);
             cashRepository = new Repository.CashLog(connectionString);
+            cardRepository = new Repository.CardTransactions(connectionString);
             trackingRepository = new Repository.Tracking();
         }
 		#endregion
@@ -1037,10 +1040,102 @@ namespace LoanStop.Transactions
 
         }
 		
-		#endregion
+        public void PaymentTable(PaymentTableModel model)
+        {
+            // payment table
+            var payment = new LoanStopModel.Payment();
+            payment.TransactionId = model.TransactionId;
+            payment.SsNumber = model.SsNumber;
+            payment.Name = model.Firstname + " " + model.Lastname;
+            payment.PaymentNumber = model.PaymentNumber;
+            payment.PaymentType = "Fee Income";
+            payment.Description = "Fee Income";
+            payment.DatePaid = model.DatePaid;
+            payment.OtherFees = model.OtherFees.ToString();
+            payment.AmountPaid = model.AmountPaid.ToString();
+            payment.AmountDue = model.AmountDue.ToString();
+            payment.Balance = model.Balance.ToString();
+            paymentRepository.Add(payment);
 
-		#region public methods
-		public NewInstallmentLoanResponse AdjustHoldDates(string store, AdjustHoldDatesModel model)
+            // cash log;
+            var cashLog = new LoanStopModel.CashLog();
+            cashLog.TransactionType = "Revenue";
+            cashLog.Category = "Revenue";
+            cashLog.Description = "Pd Cash";
+            cashLog.Amount = model.AmountPaid;
+            cashLog.Type = "credit";
+            cashLog.PayableTo = model.Firstname + " " + model.Lastname;
+            cashLog.SsNumber = model.SsNumber;
+            cashLog.TransactionNumber = model.TransactionId;
+            cashLog.Date = model.DatePaid;
+            cashRepository.Add(cashLog);
+
+
+            // cash log;
+            if (model.IsCreditCardPayment || model.IsACH)
+            {
+                var cashLogTransfer = new LoanStopModel.CashLog();
+                cashLogTransfer.TransactionType = "Transfer";
+                cashLogTransfer.Category = "Withdrawl";
+                cashLogTransfer.Description = "cc payment";
+                cashLogTransfer.Amount = model.AmountPaid;
+                cashLogTransfer.Type = "debit";
+                cashLogTransfer.PayableTo = model.Firstname + " " + model.Lastname;
+                cashLogTransfer.SsNumber = model.SsNumber;
+                cashLogTransfer.TransactionNumber = model.TransactionId;
+                cashLogTransfer.Date = model.DatePaid;
+                cashRepository.Add(cashLog);
+            }
+
+            if (model.Balance == 0)
+            {
+                var trans = transRepository.GetById(model.TransactionId);
+                var client = clientRepository.GetBySSNumber(model.SsNumber);
+
+                trans.Status = "Paid";
+                transRepository.Update(trans);
+
+                client.State = "1";
+                clientRepository.Update(client);
+            }
+
+
+        }
+
+        public bool MoneyGram(MoneyGramModel model)
+        {
+
+            switch (model.MoneyGramType)
+            {
+                case "MONEY_ORDER":
+                    {
+                        DoMoneyOrder(model);
+                        break;
+                    }
+                case "SEND_WIRE":
+                    {
+                        DoSendWire(model);
+                        break;
+                    }
+                case "BILL_PAY":
+                    {
+                        DoBillPay(model);
+                        break;
+                    }
+                case "DEBIT_CARD_LOAD":
+                    {
+                        DoDebitCardLoad(model);
+                        break;
+                    }
+            }
+
+            return true;
+        }
+
+        #endregion
+
+        #region public methods
+        public NewInstallmentLoanResponse AdjustHoldDates(string store, AdjustHoldDatesModel model)
         {
             //logAction(store, "AdjustHoldDates", model);
             
@@ -1153,8 +1248,6 @@ namespace LoanStop.Transactions
         {
             var result = new List<PaymentEntity>();
 
-//            var paymentRepository = new Repository.Payment(connectionString);
-
             var payments = paymentRepository.GetAllForTransaction(transactionId);
 
             foreach (var payment in payments)
@@ -1188,69 +1281,294 @@ namespace LoanStop.Transactions
 			return decimal.Parse(ppc.OrignalAmount);
 		}
 
-		#endregion
+        public List<PaymentEntity> PaymentTable(long transactionId)
+        {
+            var result = new List<PaymentEntity>();
 
-		#region private
-		//private TransactionResponse GetFullTransaction(long TransId)
+            var payments = paymentRepository.GetAllForTransaction(transactionId);
 
-		//private void payment(LoanStopModel.Client client, LoanStopModel.Transaction trans, string type)
-		//{
+            foreach (var payment in payments)
+            {
+                var newItem = new PaymentEntity()
+                {
+                    Id = payment.Id,
+                    TransactionId = payment.TransactionId,
+                    Name = payment.Name,
+                    SsNumber = payment.SsNumber,
+                    Description = payment.Description,
+                    DateDue = payment.DateDue,
+                    DatePaid = payment.DatePaid,
+                    AmountDue = payment.AmountDue != "" ? decimal.Parse(payment.AmountDue) : 0,
+                    AmountPaid = payment.AmountPaid != "" ? decimal.Parse(payment.AmountPaid) : 0,
+                    OtherFees = payment.OtherFees != "" ? decimal.Parse(payment.OtherFees) : 0,
+                    Balance = payment.Balance != "" ? decimal.Parse(payment.Balance) : 0,
+                };
 
-		//	//payment table
-		//	var payment = new LoanStopModel.Payment();
-		//	payment.TransactionId = (int)trans.Id;
-		//	payment.SsNumber = client.SsNumber;
-		//	payment.Name = client.Firstname + " " + client.Lastname;
-		//	payment.Description = type; //"Minimum";
-		//	payment.DatePaid = this.date;
-		//	payment.AmountPaid = this.updateFee.ToString();
-		//	payment.AmountDue = this.paymentAmount.ToString();
-		//	payment.Balance = updateBalance.ToString();
-		//	payment.PaymentNumber = (int)this.paymentNumber;
-		//	payment.PaymentType = "Fee Income";
-		//	paymentRepository.Add(payment);
+                result.Add(newItem);
+            }
 
-		//	//Cash Log
-		//	var cash = new LoanStopModel.CashLog();
-		//	cash.TransactionType = "Revenue";
-		//	cash.Category = "Revenue";
-		//	cash.Description = "Pd Cash";
-		//	cash.Amount =  this.amountPaid;
-		//	cash.TransactionType  = "credit";
-		//	cash.PayableTo = client.Firstname + " " + client.Lastname;
-		//	cash.SsNumber =client.SsNumber;
-		//	cash.TransactionNumber = trans.Id;
-		//	cashRepository.Add(cash);
+            return result;
+        }
 
-		//	// update transaction
-		//	trans.AmountRecieved = this.updateTransactionAmountRecieved;
-		//	transRepository.Update(trans);
+        public void DoMoneyOrder(MoneyGramModel model)
+        {
+            decimal amount = model.CollectAmount;
 
-		//	// update paymentPlanChecks table
-		//	for (var i=0; i < 6; i++ )
-		//	{ 
-		//		var ppc = trans.PaymentPlanChecks[i];
+            var moneyOrder = new LoanStopModel.CardTransaction();
+            var Count = model.MoneyOrderCount;
+            moneyOrder.SsNumber = model.SsNumber;
+            moneyOrder.Trnx = "Money Order";
+            moneyOrder.FeeDue = (Count * decimal.Parse(this.defaults.MoneyOrderCost)).ToString();
+            moneyOrder.Fee = (Count * decimal.Parse(this.defaults.MoneyOrderFee)).ToString();
+            moneyOrder.LoadAmount = (model.CollectAmount - model.Fee).ToString();
+            moneyOrder.Total = (model.LoadAmount + model.Fee).ToString();
+            moneyOrder.TotalDue = (model.LoadAmount + model.FeeDue).ToString();
+            cardRepository.Add(moneyOrder);
 
-		//		if (i == this.paymentNumber)
-		//		{ 
-		//			ppc.AmountRecieved = this.updatePpcAmountRecieved;
-		//			ppc.AmountPaid = this.updatePaymentPlanChecksAmount;
-		//			ppc.DatePaid =  this.date;
-		//			ppc.Status = this.updatePPCStatus;
-		//			ppcRepository.Update(ppc);
-		//		}
-		//		else 
-		//		{ 
-		//			ppcRepository.Update(ppc);
-		//		}
+            if (model.CollectAmount > 0)
+            {
+                var cashLog = new LoanStopModel.CashLog();
+                cashLog.TransactionType = "Money Order";
+                cashLog.Category = "Money Order";
+                cashLog.Description = "Money Order";
+                cashLog.Amount = amount;
+                cashLog.Type = "credit";
+                cashLog.PayableTo = model.Firstname + " " + model.Lastname;
+                cashLog.SsNumber = model.SsNumber;
+                cashLog.TransactionNumber = 0;
+                cashLog.Date = model.DatePaid;
+                cashRepository.Add(cashLog);
 
-		//	}
+                //checkbook
+                var check = new LoanStopModel.Checkbook();
+                check.CheckNumber = 0;
+                check.PayableTo = model.Firstname + " " + model.Lastname;
+                check.TransactionType = "Money Order";
+                check.Category = "Money Order";
+                check.Description = "Money Order";
+                check.Amount = -amount;
+                check.Type = "debit";
+                check.TransactionNumber = 0;
+                check.SsNumber = model.SsNumber;
+                checkbookRepository.Add(check);
+            }
+            else if (model.CollectAmount < 0)
+            {
+                var cashLog = new LoanStopModel.CashLog();
+                cashLog.TransactionType = "Money Order";
+                cashLog.Category = "Money Order";
+                cashLog.Description = "Money Order";
+                cashLog.Amount = amount;
+                cashLog.Type = "debit";
+                cashLog.PayableTo = model.Firstname + " " + model.Lastname;
+                cashLog.SsNumber = model.SsNumber;
+                cashLog.TransactionNumber = 0;
+                cashLog.Date = model.DatePaid;
+                cashRepository.Add(cashLog);
 
-		//	//update client
-		//	clientRepository.Update(client);
+                //checkbook
+                var check = new LoanStopModel.Checkbook();
+                check.CheckNumber = 0;
+                check.PayableTo = model.Firstname + " " + model.Lastname;
+                check.TransactionType = "Money Order";
+                check.Category = "Money Order";
+                check.Description = "Money Order";
+                check.Amount = -amount;
+                check.Type = "debit";
+                check.TransactionNumber = 0;
+                check.SsNumber = model.SsNumber;
+                checkbookRepository.Add(check);
+            }
 
-		//}
-        
+        }
+
+        public void DoSendWire(MoneyGramModel model)
+        {
+            decimal amount = model.CollectAmount;
+
+            if (model.CollectAmount > 0)
+            {
+                var cashLog = new LoanStopModel.CashLog();
+                cashLog.TransactionType = "Send Wire";
+                cashLog.Category = "Send Wire";
+                cashLog.Description = "Send Wire";
+                cashLog.Amount = amount;
+                cashLog.Type = "credit";
+                cashLog.PayableTo = model.Firstname + " " + model.Lastname;
+                cashLog.SsNumber = model.SsNumber;
+                cashLog.TransactionNumber = 0;
+                cashLog.Date = model.DatePaid;
+                cashRepository.Add(cashLog);
+
+                //checkbook
+                var check = new LoanStopModel.Checkbook();
+                check.CheckNumber = 0;
+                check.PayableTo = model.Firstname + " " + model.Lastname;
+                check.TransactionType = "Send Wire";
+                check.Category = "Send Wire";
+                check.Description = "Send Wire";
+                check.Amount = -amount;
+                check.Type = "debit";
+                check.TransactionNumber = 0;
+                check.SsNumber = model.SsNumber;
+                checkbookRepository.Add(check);
+            }
+            else if (model.CollectAmount < 0)
+            {
+                var cashLog = new LoanStopModel.CashLog();
+                cashLog.TransactionType = "Send Wire";
+                cashLog.Category = "Send Wire";
+                cashLog.Description = "Send Wire";
+                cashLog.Amount = amount;
+                cashLog.Type = "debit";
+                cashLog.PayableTo = model.Firstname + " " + model.Lastname;
+                cashLog.SsNumber = model.SsNumber;
+                cashLog.TransactionNumber = 0;
+                cashLog.Date = model.DatePaid;
+                cashRepository.Add(cashLog);
+
+                //checkbook
+                var check = new LoanStopModel.Checkbook();
+                check.CheckNumber = 0;
+                check.PayableTo = model.Firstname + " " + model.Lastname;
+                check.TransactionType = "Send Wire";
+                check.Category = "Send Wire";
+                check.Description = "Send Wire";
+                check.Amount = -amount;
+                check.Type = "debit";
+                check.TransactionNumber = 0;
+                check.SsNumber = model.SsNumber;
+                checkbookRepository.Add(check);
+            }
+
+        }
+
+        public void DoBillPay(MoneyGramModel model)
+        {
+            decimal amount = model.CollectAmount;
+
+            if (model.CollectAmount > 0)
+            {
+                var cashLog = new LoanStopModel.CashLog();
+                cashLog.TransactionType = "Bill Pay";
+                cashLog.Category = "Bill Pay";
+                cashLog.Description = "Bill Pay";
+                cashLog.Amount = amount;
+                cashLog.Type = "credit";
+                cashLog.PayableTo = model.Firstname + " " + model.Lastname;
+                cashLog.SsNumber = model.SsNumber;
+                cashLog.TransactionNumber = 0;
+                cashLog.Date = model.DatePaid;
+                cashRepository.Add(cashLog);
+
+                //checkbook
+                var check = new LoanStopModel.Checkbook();
+                check.CheckNumber = 0;
+                check.PayableTo = model.Firstname + " " + model.Lastname;
+                check.TransactionType = "Bill Pay";
+                check.Category = "Bill Pay";
+                check.Description = "Bill Pay";
+                check.Amount = -amount;
+                check.Type = "debit";
+                check.TransactionNumber = 0;
+                check.SsNumber = model.SsNumber;
+                checkbookRepository.Add(check);
+            }
+            else if (model.CollectAmount < 0)
+            {
+                var cashLog = new LoanStopModel.CashLog();
+                cashLog.TransactionType = "Bill Pay";
+                cashLog.Category = "Bill Pay";
+                cashLog.Description = "Bill Pay";
+                cashLog.Amount = amount;
+                cashLog.Type = "debit";
+                cashLog.PayableTo = model.Firstname + " " + model.Lastname;
+                cashLog.SsNumber = model.SsNumber;
+                cashLog.TransactionNumber = 0;
+                cashLog.Date = model.DatePaid;
+                cashRepository.Add(cashLog);
+
+                //checkbook
+                var check = new LoanStopModel.Checkbook();
+                check.CheckNumber = 0;
+                check.PayableTo = model.Firstname + " " + model.Lastname;
+                check.TransactionType = "Bill Pay";
+                check.Category = "Bill Pay";
+                check.Description = "Bill Pay";
+                check.Amount = -amount;
+                check.Type = "debit";
+                check.TransactionNumber = 0;
+                check.SsNumber = model.SsNumber;
+                checkbookRepository.Add(check);
+            }
+
+        }
+
+        public void DoDebitCardLoad(MoneyGramModel model)
+        {
+            decimal amount = model.CollectAmount;
+
+            if (model.CollectAmount > 0)
+            {
+                var cashLog = new LoanStopModel.CashLog();
+                cashLog.TransactionType = "Debit Card Load";
+                cashLog.Category = "Debit Card Load";
+                cashLog.Description = "Debit Card Load";
+                cashLog.Amount = amount;
+                cashLog.Type = "credit";
+                cashLog.PayableTo = model.Firstname + " " + model.Lastname;
+                cashLog.SsNumber = model.SsNumber;
+                cashLog.TransactionNumber = 0;
+                cashLog.Date = model.DatePaid;
+                cashRepository.Add(cashLog);
+
+                //checkbook
+                var check = new LoanStopModel.Checkbook();
+                check.CheckNumber = 0;
+                check.PayableTo = model.Firstname + " " + model.Lastname;
+                check.TransactionType = "Debit Card Load";
+                check.Category = "Debit Card Load";
+                check.Description = "Debit Card Load";
+                check.Amount = -amount;
+                check.Type = "debit";
+                check.TransactionNumber = 0;
+                check.SsNumber = model.SsNumber;
+                checkbookRepository.Add(check);
+            }
+            else if (model.CollectAmount < 0)
+            {
+                var cashLog = new LoanStopModel.CashLog();
+                cashLog.TransactionType = "Debit Card Load";
+                cashLog.Category = "Debit Card Load";
+                cashLog.Description = "Debit Card Load";
+                cashLog.Amount = amount;
+                cashLog.Type = "debit";
+                cashLog.PayableTo = model.Firstname + " " + model.Lastname;
+                cashLog.SsNumber = model.SsNumber;
+                cashLog.TransactionNumber = 0;
+                cashLog.Date = model.DatePaid;
+                cashRepository.Add(cashLog);
+
+                //checkbook
+                var check = new LoanStopModel.Checkbook();
+                check.CheckNumber = 0;
+                check.PayableTo = model.Firstname + " " + model.Lastname;
+                check.TransactionType = "Bill Pay";
+                check.Category = "Bill Pay";
+                check.Description = "Bill Pay";
+                check.Amount = -amount;
+                check.Type = "debit";
+                check.TransactionNumber = 0;
+                check.SsNumber = model.SsNumber;
+                checkbookRepository.Add(check);
+            }
+
+        }
+
+        #endregion
+
+        #region private
+
         private void CloseTransaction(LoanStopModel.Transaction trans, DateTime closedDate, long ppcId)
         {
             trans.Status =  "Closed";

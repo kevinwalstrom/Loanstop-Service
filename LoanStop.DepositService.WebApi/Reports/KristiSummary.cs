@@ -127,7 +127,6 @@ namespace LoanStop.Services.WebApi.Reports
         }
 
 
-
         public KristiSummaryStoreClass Detail(string category, DateTime startDate, DateTime endDate)
         {
 
@@ -175,7 +174,6 @@ namespace LoanStop.Services.WebApi.Reports
             return rtrn;
 
         }
-
 
         #region "summary"
         private decimal LoansMade(StoreConnectionType connection, DateTime startDate, DateTime endDate)
@@ -386,7 +384,7 @@ namespace LoanStop.Services.WebApi.Reports
             if (startDate == endDate)
                 tempEndDate = startDate.AddDays(1);
 
-            rtrn = Reports.LoandsTransactionsDetail(startDate, tempEndDate);
+            rtrn = Reports.LoansTransactionsDetail(startDate, tempEndDate);
 
             return rtrn;
         }

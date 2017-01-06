@@ -1,8 +1,10 @@
-using Microsoft.Practices.Unity;
+
 using System.Web.Http;
 using Unity.WebApi;
 using LoanStop.Services.WebApi.Defaults;
 using LoanStop.Services.WebApi.Connections;
+using Microsoft.Practices.Unity;
+
 
 namespace LoanStop.Services.WebApi
 {

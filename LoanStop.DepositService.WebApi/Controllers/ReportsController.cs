@@ -375,21 +375,21 @@ namespace LoanStop.Services.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/report/DailyBalanceSummary/detail/{store}/{category}/{startDate}/{endDate}")]
+        [Route("api/report/dailybalance/detail/{store}/{category}/{startDate}/{endDate}")]
         [EnableCors(origins: "http://localhost:8080, http://test.loanstop.com, http://localhost:49291, http://ls-server", headers: "*", methods: "*")]
         public IHttpActionResult DailyBalanceStoreDetail(string store, string category, DateTime startDate, DateTime endDate)
         {
             ResponseType returnReport = null;
 
-            var selectedStores = Connections.Items.Where(s => s.DatabaseName.ToLower() == store.ToLower()).ToList();
+            var selectedStore = Connections.Items.Where(s => s.DatabaseName.ToLower() == store.ToLower()).ToList().FirstOrDefault();
 
-            var report = new KristiSummary(selectedStores);
+            var report = new StoreDetail(selectedStore);
 
             try
             {
 
                 returnReport = new ResponseType();
-                returnReport.Item = report.Detail(category, startDate, endDate);
+                returnReport.Item = report.Execute(category, startDate, endDate);
             }
             catch (Exception ex)
             {

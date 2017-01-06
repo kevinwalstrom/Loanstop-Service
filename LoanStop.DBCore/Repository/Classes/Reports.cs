@@ -764,8 +764,7 @@ namespace LoanStop.DBCore.Repository
             return returnValue.Value;
         }
 
-        #endregion 
-
+        #endregion
 
         public List<object> LoansCashLogDetail(DateTime startDate, DateTime endDate)
         {
@@ -803,9 +802,10 @@ namespace LoanStop.DBCore.Repository
             }
 
             return returnValue;
+
         }
 
-        public List<object> LoandsTransactionsDetail(DateTime startDate, DateTime endDate)
+        public List<object> LoansTransactionsDetail(DateTime startDate, DateTime endDate)
         {
             List<object> returnValue = new List<object>();
 
@@ -839,6 +839,8 @@ namespace LoanStop.DBCore.Repository
             }
 
             return returnValue;
+
+
         }
 
         public List<object> PaymentsCashLogDetail(DateTime startDate, DateTime endDate)
