@@ -766,7 +766,7 @@ namespace LoanStopModel
                 .Property(p => p.TransactionId)
                     .HasColumnName("transaction_id")
                     .IsRequired()
-                    .HasColumnType("int");
+                    .HasColumnType("bigint");
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Name)
                     .HasColumnName("name")

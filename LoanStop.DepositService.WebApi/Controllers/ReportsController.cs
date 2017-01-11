@@ -375,7 +375,7 @@ namespace LoanStop.Services.WebApi.Controllers
         }
 
         [HttpGet]
-        [Route("api/report/dailybalance/detail/{store}/{category}/{startDate}/{endDate}")]
+        [Route("api/report/DailyBalanceSummary/detail/{store}/{category}/{startDate}/{endDate}")]
         [EnableCors(origins: "http://localhost:8080, http://test.loanstop.com, http://localhost:49291, http://ls-server", headers: "*", methods: "*")]
         public IHttpActionResult DailyBalanceStoreDetail(string store, string category, DateTime startDate, DateTime endDate)
         {
