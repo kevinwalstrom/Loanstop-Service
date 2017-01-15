@@ -33,25 +33,25 @@ namespace LoanStop.Services.WebApi.Reports
             {
                 case "loan":
                     {
-                        rtrn.ledger.loans = LoansCashLogDetail(this.Connection, startDate, endDate);
+                        rtrn.ledger.amounts = LoansCashLogDetail(this.Connection, startDate, endDate);
 
-                        rtrn.transactions.loans = LoansTransactionsDetail(this.Connection, startDate, endDate);
+                        rtrn.transactions.amounts = LoansTransactionsDetail(this.Connection, startDate, endDate);
 
                         break;
                     }
                 case "cashedchecks":
                     {
-                        rtrn.ledger.checkCashing = CashedCheckesCashLogDetail(this.Connection, startDate, endDate);
+                        rtrn.ledger.amounts = CashedCheckesCashLogDetail(this.Connection, startDate, endDate);
 
-                        rtrn.transactions.checkCashing = CashedChecksTransactionsDetail(this.Connection, startDate, endDate);
+                        rtrn.transactions.amounts = CashedChecksTransactionsDetail(this.Connection, startDate, endDate);
 
                         break;
                     }
                 case "payments":
                     {
-                        rtrn.ledger.checkCashing = CashedCheckesCashLogDetail(this.Connection, startDate, endDate);
+                        rtrn.ledger.amounts = PaymentsLedgerDetail(this.Connection, startDate, endDate);
 
-                        rtrn.transactions.checkCashing = CashedChecksTransactionsDetail(this.Connection, startDate, endDate);
+                        rtrn.transactions.amounts = PaymentsTransactionsDetail(this.Connection, startDate, endDate);
 
                         break;
                     }
@@ -120,6 +120,28 @@ namespace LoanStop.Services.WebApi.Reports
             rtrn = Reports.CashedChecksTransactionsDetail(startDate, endDate);
 
             return  rtrn;
+        }
+
+        private List<object> PaymentsLedgerDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
+        {
+            var Reports = new LoanStop.DBCore.Repository.DailyBalanceDetail(connection.ConnectionString());
+
+            List<object> rtrn = null;
+
+            rtrn = Reports.PaymentsCashLogDetail(startDate, endDate);
+
+            return rtrn;
+        }
+
+        private List<object> PaymentsTransactionsDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
+        {
+            var Reports = new LoanStop.DBCore.Repository.DailyBalanceDetail(connection.ConnectionString());
+
+            List<object> rtrn = null;
+
+            rtrn = Reports.PaymentsTransactionsDetail(startDate, endDate, connection.State);
+
+            return rtrn;
         }
 
 

@@ -161,5 +161,121 @@ namespace LoanStop.DBCore.Repository
             return returnValue;
         }
 
+        public List<object> PaymentsCashLogDetail(DateTime startDate, DateTime endDate)
+        {
+            List<object> returnValue = new List<object>();
+
+            string command = string.Format(
+            @"
+            SELECT transaction_number as id, payable_to as name, amount
+            FROM cash_log 
+            WHERE 
+                    (transaction_type = 'Revenue' OR transaction_type = 'Payment') and (ss_number != '222-22-2222')
+                    and 
+                `date` between '{0}' AND '{1}' 
+            ORDER BY name
+            ",
+            startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
+
+            command = command.Replace("\r\n", "");
+            command = command.Replace("\n", "");
+
+            using (MySqlDataReader reader = MySqlHelper.ExecuteReader(connectionString, command))
+            {
+                while (reader.Read())
+                {
+                    var obj = new
+                    {
+                        id = reader["id"].ToString(),
+                        name = reader["name"].ToString(),
+                        amount = decimal.Parse(reader["amount"].ToString())
+                    };
+
+                    returnValue.Add(obj);
+                }
+                reader.Close();
+            }
+
+            return returnValue;
+        }
+
+        public List<object> PaymentsTransactionsDetail(DateTime startDate, DateTime endDate, string state)
+        {
+            List<object> returnValue = new List<object>();
+
+            string command = null;
+
+            if (state.ToLower() == "colorado")
+            {
+                command = string.Format(
+                    @"SELECT id, name, amount from (
+                        SELECT transaction_id as id, name, (amount_paid + balance) as amount
+                        FROM payments 
+                        WHERE date_paid BETWEEN '{0}' AND '{1}'
+                            AND ((description <> 'Deposit Payment')	AND description <> 'DEPOSIT SERVICE' AND description <> 'NSF')
+                            AND (ss_number <> '222-22-2222')
+                        union all
+	                        SELECT id, name, amount_recieved as amount 
+                            FROM transactions 
+                                where date_cleared BETWEEN '{2}' AND '{3}'
+		                        AND status = 'Pd Cash'
+                    ) as a
+                    ORDER BY name
+                    ",
+                startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"),
+                startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
+            }
+            else
+            {
+                command = string.Format(
+                    @"SELECT id, name, amount from (
+                            (SELECT transaction_id as id, name, (amount_paid) as amount
+                            FROM payments 
+                            WHERE date_paid BETWEEN '{0}' AND '{1}'
+                                AND ((description <> 'Deposit Payment')	AND description <> 'DEPOSIT SERVICE' AND description <> 'NSF')
+                                AND (ss_number <> '222-22-2222')
+                                AND amount_paid > 0)
+                        UNION all
+                            (SELECT id, name, amount_recieved as amount 
+                            FROM transactions 
+                                where date_cleared BETWEEN '{2}' AND '{3}'
+		                        AND status = 'Pd Cash'
+                            ORDER BY id)
+                        union 
+	                        (SELECT id, name, amount_recieved as amount 
+                            FROM payment_plan_checks 
+                                where date_paid BETWEEN '{4}' AND '{5}'
+		                        AND status = 'Pd Cash')
+                    ) as a
+                    ORDER BY name
+                    ",
+                startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"),
+                startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"),
+                startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"));
+
+            }
+            command = command.Replace("\r\n", "");
+
+            using (MySqlDataReader reader = MySqlHelper.ExecuteReader(connectionString, command))
+            {
+                while (reader.Read())
+                {
+                    var obj = new
+                    {
+                        id = reader["id"].ToString(),
+                        name = reader["name"].ToString(),
+                        amount = decimal.Parse(reader["amount"].ToString())
+                    };
+
+                    returnValue.Add(obj);
+                }
+                reader.Close();
+            }
+
+            return returnValue;
+        }
+
+
+
     }
 }

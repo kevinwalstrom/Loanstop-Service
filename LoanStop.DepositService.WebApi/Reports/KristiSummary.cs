@@ -155,9 +155,9 @@ namespace LoanStop.Services.WebApi.Reports
                     break;
                 case "payments":
 
-                    rtrn.ledger.amounts = PaymentsCashLogDetail(connection, startDate, endDate);
+                    //rtrn.ledger.amounts = PaymentsCashLogDetail(connection, startDate, endDate);
 
-                    rtrn.transactions.amounts = PaymentsTransactionsDetail(connection, startDate, endDate);
+                   // rtrn.transactions.amounts = PaymentsTransactionsDetail(connection, startDate, endDate);
 
                     break;
 
@@ -389,35 +389,35 @@ namespace LoanStop.Services.WebApi.Reports
             return rtrn;
         }
 
-        private List<object> PaymentsCashLogDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
-        {
-            var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
+        //private List<object> PaymentsCashLogDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
+        //{
+        //    var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
 
-            List<object> rtrn = null;
+        //    List<object> rtrn = null;
 
-            DateTime tempEndDate = endDate;
-            if (startDate == endDate)
-                tempEndDate = startDate.AddDays(1);
+        //    DateTime tempEndDate = endDate;
+        //    if (startDate == endDate)
+        //        tempEndDate = startDate.AddDays(1);
 
-            rtrn = Reports.PaymentsCashLogDetail(startDate, tempEndDate);
+        //    rtrn = Reports.PaymentsCashLogDetail(startDate, tempEndDate);
 
-            return rtrn;
-        }
+        //    return rtrn;
+        //}
 
-        private List<object> PaymentsTransactionsDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
-        {
-            var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
+        //private List<object> PaymentsTransactionsDetail(StoreConnectionType connection, DateTime startDate, DateTime endDate)
+        //{
+        //    var Reports = new LoanStop.DBCore.Repository.Reports(connection.ConnectionString());
 
-            List<object> rtrn = null;
+        //    List<object> rtrn = null;
 
-            DateTime tempEndDate = endDate;
-            if (startDate == endDate)
-                tempEndDate = startDate.AddDays(1);
+        //    DateTime tempEndDate = endDate;
+        //    if (startDate == endDate)
+        //        tempEndDate = startDate.AddDays(1);
 
-            rtrn = Reports.PaymentsTransactionsDetail(startDate, tempEndDate, connection.State);
+        //    rtrn = Reports.PaymentsTransactionsDetail(startDate, tempEndDate, connection.State);
 
-            return rtrn;
-        }
+        //    return rtrn;
+        //}
 
 
 

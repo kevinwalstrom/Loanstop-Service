@@ -159,3 +159,8 @@ C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Debug\LoanStop.Services.W
 C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Debug\LoanStop.Services.WebApi\bin\Unity.WebApi.dll
 C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Debug\LoanStop.Services.WebApi\bin\WCFExtras.dll
 C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Debug\LoanStop.Services.WebApi\bin\WebGrease.dll
+C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Debug\LoanStop.Services.WebApi\bin\Antlr3.Runtime.dll
+C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Debug\LoanStop.Services.WebApi\bin\Antlr3.Runtime.xml
+C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Debug\LoanStop.Services.WebApi\bin\Microsoft.Web.Infrastructure.dll
+C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Debug\LoanStop.Services.WebApi\bin\System.Web.Optimization.dll
+C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Debug\LoanStop.Services.WebApi\bin\System.Web.Optimization.xml
