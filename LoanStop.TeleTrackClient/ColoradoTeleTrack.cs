@@ -88,9 +88,9 @@ namespace LoanStop.TeleTrackClient
             //employmennt information
             EmployerEntity employerEntity = new EmployerEntity();
             employerEntity.EmployerName = client.Employer;
-            employerEntity.Occupation = auxClient.Occupation;
+            employerEntity.Occupation = auxClient != null ? auxClient.Occupation : "unknown";
             IncomeEntity incomeEntity = new IncomeEntity();
-            incomeEntity.Amount = decimal.Parse(auxClient.NetFromPaystubs);
+            incomeEntity.Amount = auxClient != null ? decimal.Parse(auxClient.NetFromPaystubs) : 1000m;
             incomeEntity.PaymentFrequency = Proxy.PaymentFrequencyType.Biweekly;
             employerEntity.Salary = incomeEntity;
 

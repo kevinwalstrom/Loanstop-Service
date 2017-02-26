@@ -403,7 +403,7 @@ namespace LoanStop.Services.WebApi.Quickbooks
                 Trns="TRNS",
                 TrnsType= "&DEPOSIT",
                 Date = record.export_date,
-                Accnt = string.Format(CASH_ACCOUNT, bankAccount, bankName),
+                Accnt = string.Format(CASH_ACCOUNT, cashAccount, storeName),
                 Name = record.catagory,
                 Amount = record.amount,
                 Docnum = record.doc_num,

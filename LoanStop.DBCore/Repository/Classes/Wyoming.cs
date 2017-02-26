@@ -1374,8 +1374,8 @@ namespace LoanStop.DBCore.Repository
 	            FROM checkbook 
 	            WHERE date_entered BETWEEN '{2}' AND '{3}' AND transaction_type = 'Transfer' 
             ", 
-             startDate.ToString("yyyy-MM-dd"),endDate.ToString("yyyy-MM-dd 23:59:00"),startDate.ToString("yyyy-MM-dd"),endDate.ToString("yyyy-MM-dd 23:59:00"),
-             startDate.ToString("yyyy-MM-dd"),endDate.ToString("yyyy-MM-dd 23:59:00"),startDate.ToString("yyyy-MM-dd"),endDate.ToString("yyyy-MM-dd 23:59:00")
+             startDate.ToString("yyyy-MM-dd"),endDate.ToString("yyyy-MM-dd 23:59:00"),
+             startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59:00")
              ); 	
 
             using (MySqlDataReader reader = MySqlHelper.ExecuteReader(ConnectionString, command))

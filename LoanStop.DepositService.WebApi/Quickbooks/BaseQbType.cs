@@ -67,7 +67,7 @@ namespace LoanStop.Services.WebApi.Quickbooks
                     break;
                 case "fort_collins":
                     bankAccount = "1062";
-                    bankAccount2 = "1060";
+                    bankAccount2 = "1062";
                     cashAccount = "1065";
                     classNumber = "06 Fort Collins";
                     storeName = "Fort Collins";
@@ -85,7 +85,7 @@ namespace LoanStop.Services.WebApi.Quickbooks
                     break;
                 case "greeley":
                     bankAccount = "1092";
-                    bankAccount2 = "1090";
+                    bankAccount2 = "1092";
                     cashAccount = "1095";
                     classNumber = "09 Greeley";
                     storeName = "Greeley";
@@ -112,7 +112,7 @@ namespace LoanStop.Services.WebApi.Quickbooks
                     break;
                 case "cheyenne":
                     bankAccount = "1051";
-                    bankAccount2 = "1050";
+                    bankAccount2 = "1051";
                     cashAccount = "1055";
                     classNumber = "05 Cheyenne";
                     storeName = "Cheyenne";
@@ -121,7 +121,7 @@ namespace LoanStop.Services.WebApi.Quickbooks
                     break;
                 case "laramie":
                     bankAccount = "1101";
-                    bankAccount2 = "1100";
+                    bankAccount2 = "1101";
                     cashAccount = "1105";
                     classNumber = "10 Laramie";
                     storeName = "Laramie";
@@ -139,7 +139,7 @@ namespace LoanStop.Services.WebApi.Quickbooks
                     break;
                 case "rocksprings":
                     bankAccount = "1131";
-                    bankAccount2 = "1130";
+                    bankAccount2 = "1131";
                     cashAccount = "1135";
                     classNumber = "13 Rock Springs";
                     storeName = "Rock Springs";

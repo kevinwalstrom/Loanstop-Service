@@ -228,13 +228,13 @@ namespace LoanStop.DBCore.Repository
             else
             {
                 command = string.Format(
-                    @"SELECT id, name, amount from (
+                    @"SELECT id, name, SUM(amount) as amount from (
                             (SELECT transaction_id as id, name, (amount_paid) as amount
                             FROM payments 
                             WHERE date_paid BETWEEN '{0}' AND '{1}'
                                 AND ((description <> 'Deposit Payment')	AND description <> 'DEPOSIT SERVICE' AND description <> 'NSF')
                                 AND (ss_number <> '222-22-2222')
-                                AND amount_paid > 0)
+                                )
                         UNION all
                             (SELECT id, name, amount_recieved as amount 
                             FROM transactions 
@@ -247,6 +247,7 @@ namespace LoanStop.DBCore.Repository
                                 where date_paid BETWEEN '{4}' AND '{5}'
 		                        AND status = 'Pd Cash')
                     ) as a
+                    GROUP BY id, name  HAVING amount <> 0
                     ORDER BY name
                     ",
                 startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd 23:59"),

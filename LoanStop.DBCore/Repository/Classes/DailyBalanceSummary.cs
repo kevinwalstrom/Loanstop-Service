@@ -123,7 +123,7 @@ namespace LoanStop.DBCore.Repository
                             WHERE date_paid BETWEEN '{0}' AND '{1}'
                                 AND ((description <> 'Deposit Payment')	AND description <> 'DEPOSIT SERVICE' AND description <> 'NSF')
                                 AND (ss_number <> '222-22-2222')
-                                AND amount_paid > 0)
+                                )
                             UNION all
                             (SELECT id, amount_recieved as amount 
                             FROM transactions 

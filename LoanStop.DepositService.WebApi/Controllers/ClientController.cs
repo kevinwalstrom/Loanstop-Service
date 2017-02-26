@@ -70,6 +70,8 @@ namespace LoanStop.Services.WebApi.Controllers
         /// <param name="request"></param>
         public ResponseType Post(string verifyId, [FromBody]RequestType request)
         {
+            AuxClient auxClient = null;
+
             ResponseType response = new ResponseType();
 
             if (Request.Headers.Contains("access-key"))
@@ -80,14 +82,23 @@ namespace LoanStop.Services.WebApi.Controllers
                     var inquiryResponse = new InquiryResponse();
 
                     var client = JsonConvert.DeserializeObject<Client>(request.Entity);
-                    var auxClient = JsonConvert.DeserializeObject<AuxClient>(client.AuxClient.ToString());
+
+                    if (client.AuxClient != null)
+                    {
+                        auxClient = JsonConvert.DeserializeObject<AuxClient>(client.AuxClient.ToString());
+                    }
 
                     var teletrack = new ColoradoTeleTrack();
-                    teletrack.Facility = request.Store;
-                    teletrack.UserName = defaults.TeleTrackUserName;
-                    teletrack.SubscriberID = defaults.TeleTrackSubscriberID;
-                    teletrack.Password = defaults.TeleTrackPassword;
-                    var teletrackResonse = teletrack.Inquiry(client, auxClient);
+                    var teletrackResonse = new InquiryResponse() { Error = true };
+                     
+                    if (auxClient != null)
+                    {
+                        teletrack.Facility = request.Store;
+                        teletrack.UserName = defaults.TeleTrackUserName;
+                        teletrack.SubscriberID = defaults.TeleTrackSubscriberID;
+                        teletrack.Password = defaults.TeleTrackPassword;
+                        teletrackResonse = teletrack.Inquiry(client, auxClient);
+                    }
 
                     if (!teletrackResonse.Error)
                     {
