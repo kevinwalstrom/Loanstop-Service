@@ -126,6 +126,113 @@ namespace LoanStop.Services.WebApi.Reports
 
         }
 
+        public object Backward(DateTime startDate, DateTime endDate)
+        {
+
+            List<KristiSummaryClass> stores = new List<KristiSummaryClass>();
+
+            DateTime undepositedDate = DateTime.Today;
+
+            foreach (var connection in Connections)
+            {
+                var currentStore = new KristiSummaryClass();
+                currentStore.LoansMade = LoansMade(connection, startDate, endDate);
+                currentStore.LoansPaid = LoansPaid(connection, startDate, endDate);
+                currentStore.Undeposited = Undeposited(connection, undepositedDate, undepositedDate);
+                currentStore.UndepositedQuickbooks = UndepositedQuickbooks(connection, startDate, endDate);
+                currentStore.Bounced = Bounced(connection, startDate, endDate);
+                currentStore.NetFees = NetFees(currentStore.LoansPaid, currentStore.LoansMade, currentStore.Bounced);
+                currentStore.Expenses = Expenses(connection, startDate, endDate);
+
+                currentStore.CashLogCredits = CashLogCredits(connection, startDate, endDate);
+                currentStore.CashLogDebits = CashLogDebits(connection, startDate, endDate);
+                //currentStore.CashTransactionsCredits = CashTransactionsCredits(connection, startDate, endDate);
+                //currentStore.CashTransactionsDebits = CashTransactionsDebits(connection, startDate, endDate);
+
+
+                stores.Add(currentStore);
+            }
+
+            var loansMade = new List<decimal>();
+            var loansPaid = new List<decimal>();
+            var undeposited = new List<decimal>();
+            var undepositedQuickbooks = new List<decimal>();
+            var bounced = new List<decimal>();
+            var netFees = new List<decimal>();
+            var expenses = new List<decimal>();
+
+            var cashLogCredits = new List<List<CashLogCreditsDebitsEntity>>();
+            var cashLogDebits = new List<List<CashLogCreditsDebitsEntity>>();
+            var cashTransactionsCredits = new List<decimal>();
+            var cashTransactionsDebits = new List<decimal>();
+
+            int index = 1;
+
+            loansMade.Add(0.00m);
+            loansPaid.Add(0.00m);
+            undeposited.Add(0.00m);
+            undepositedQuickbooks.Add(0.00m);
+            bounced.Add(0.00m);
+            netFees.Add(0.00m);
+            expenses.Add(0.00m);
+
+            cashLogCredits.Add(new List<CashLogCreditsDebitsEntity>());
+            cashLogDebits.Add(new List<CashLogCreditsDebitsEntity>());
+            //cashTransactionsCredits.Add(0.00m);
+            //cashTransactionsDebits.Add(0.00m);
+
+
+            foreach (var store in stores)
+            {
+                loansMade.Add(store.LoansMade);
+                loansPaid.Add(store.LoansPaid);
+                undeposited.Add(store.Undeposited);
+                undepositedQuickbooks.Add(store.UndepositedQuickbooks);
+                bounced.Add(store.Bounced);
+                netFees.Add(store.NetFees);
+                expenses.Add(store.Expenses);
+
+                cashLogCredits.Add(store.CashLogCredits);
+                cashLogDebits.Add(store.CashLogDebits);
+                cashTransactionsCredits.Add(store.CashTransactionsCredits);
+                cashTransactionsDebits.Add(store.CashTransactionsDebits);
+            }
+
+            loansMade.Add(loansMade.Sum());
+            loansPaid.Add(loansPaid.Sum());
+            undeposited.Add(undeposited.Sum());
+            undepositedQuickbooks.Add(undepositedQuickbooks.Sum());
+            bounced.Add(bounced.Sum());
+            netFees.Add(netFees.Sum());
+            expenses.Add(expenses.Sum());
+
+            //cashLogCredits.Add(cashLogCredits.Sum());
+            //cashLogDebits.Add(cashLogDebits.Sum());
+            //cashTransactionsCredits.Add(cashTransactionsCredits.Sum());
+            //cashTransactionsDebits.Add(cashTransactionsDebits.Sum());
+
+            var rtrnObj = new
+            {
+                newLoansMade = loansMade.ToArray(),
+                loansPaid = loansPaid.ToArray(),
+                undepositedReceivables = undeposited.ToArray(),
+                undepositedQuickbooks = undepositedQuickbooks.ToArray(),
+                bounced = bounced.ToArray(),
+                netFees = netFees.ToArray(),
+                expenses = expenses.ToArray(),
+
+                cashLogCredits = cashLogCredits.ToArray(),
+                cashLogDebits = cashLogDebits.ToArray(),
+                //cashTransactionsCredits = cashTransactionsCredits.ToArray(),
+                //cashTransactionsDebits = cashTransactionsDebits.ToArray()
+
+            };
+
+            return rtrnObj;
+
+        }
+
+
 
         public KristiSummaryStoreClass Detail(string category, DateTime startDate, DateTime endDate)
         {

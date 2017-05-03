@@ -319,6 +319,36 @@ namespace LoanStop.Services.WebApi.Controllers
         }
 
 
+        [HttpGet]
+        [Route("api/report/receivablesjob/{startDate}/{endDate}")]
+        [EnableCors(origins: "http://localhost:8080, http://test.loanstop.com, http://localhost:49291, http://ls-server", headers: "*", methods: "*")]
+        public IHttpActionResult receivablesjob(DateTime startDate, DateTime endDate)
+        {
+            ResponseType returnReport = null;
+
+            var stores = Connections.Items.Where(s => s.State.ToLower() == "colorado" || s.State.ToLower() == "wyoming").ToList();
+            stores.Remove(stores.Where(s => s.DatabaseName == "closed_stores").FirstOrDefault());
+
+
+            var report = new KristiSummary(stores);
+
+            try
+            {
+
+                returnReport = new ResponseType();
+                returnReport.Item = report.Backward(startDate, endDate);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+
+            return Ok(returnReport);
+
+        }
+
+
         #region "daily balance report
         [HttpGet]
         [Route("api/report/DailyBalanceSummary/{startDate}/{endDate}")]
