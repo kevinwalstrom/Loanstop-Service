@@ -152,9 +152,9 @@ namespace LoanStop.Services.WebApi.Business.Client
                 try { 
                     masterItem = masterDb.MasterClients.Where(c => c.SsNumber == model.SsNumber).FirstOrDefault();
 
-                    if (clientItem == null)
+                    if (masterItem == null)
                     {
-                        clientItem = new Entity.Client();
+                        masterItem = new Entity.MasterClient();
                         bNew = true;
                     }
 
