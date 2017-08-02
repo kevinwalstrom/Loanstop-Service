@@ -60,8 +60,6 @@ namespace LoanStop.Services.WebApi.Reports
             var cashTransactionsCredits = new List<decimal>();
             var cashTransactionsDebits = new List<decimal>();
 
-            int index = 1;
-
             loansMade.Add(0.00m);
             loansPaid.Add(0.00m);
             undeposited.Add(0.00m);
@@ -165,8 +163,6 @@ namespace LoanStop.Services.WebApi.Reports
             var cashLogDebits = new List<List<CashLogCreditsDebitsEntity>>();
             var cashTransactionsCredits = new List<decimal>();
             var cashTransactionsDebits = new List<decimal>();
-
-            int index = 1;
 
             loansMade.Add(0.00m);
             loansPaid.Add(0.00m);

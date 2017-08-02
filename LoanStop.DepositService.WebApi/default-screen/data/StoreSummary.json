@@ -1,0 +1,10 @@
+{
+	"ledger":{
+		"loans":5,
+		"payments":10
+	},
+	"transactions":{
+		"loans":15,
+		"payments":20
+	}
+}

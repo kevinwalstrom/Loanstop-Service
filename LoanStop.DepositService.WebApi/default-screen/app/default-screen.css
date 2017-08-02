@@ -1,0 +1,155 @@
+﻿body 
+{
+    font-family: Verdana;
+    font-size: 8pt;
+    background: black;
+}
+
+body.noscroll{
+    overflow:hidden;
+}
+
+
+
+/*.default-screen-container{
+  margin-right: auto; 
+  margin-left: auto; 
+  margin-top: 40px; 
+  margin-bottom: auto; 
+  width: 800px;
+  height: 800px;
+  background: #eff1f4;
+  border-radius: 12px; 
+}*/
+
+#app-container{
+    background: black;  
+}
+
+.center-content {
+
+}
+
+button.nomargin{
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;  
+}
+
+
+.default-screen-container{
+  margin-right: auto; 
+  margin-left: auto; 
+  margin-top: 40px; 
+  margin-bottom: auto; 
+  padding: 20px;
+  width: 800px;
+  height: 800px;
+  background: #eff1f4;
+  border-radius: 12px; 
+}
+
+
+.default-screen-tr{
+  padding: 0px;
+  margin: 0px;
+  line-height: .9;
+}
+
+.default-screen-td{
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-right: 6px;
+  font-size: 8pt;
+}
+
+.default-screen-col3{
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-right: 6px;
+  text-align: right;
+  width:60px;
+}
+
+.default-screen-col4{
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 16px;
+  padding-right: 4px;
+  margin-left: 16px;
+  margin-right: 6px;
+  text-align: right;
+  width:80px;
+}
+
+.default-screen-col5{
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-right: 6px;
+  width:20px;
+}
+
+.default-screen-col8{
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 4px;
+  padding-right: 4px;
+  margin-left: 8px;
+}
+
+.default-screen-header{
+  width:100%;
+}
+
+.default-screen-table-div{
+  padding: 20px;
+  background-color: #eff1f4;
+  display: inline-block;
+}
+
+.default-screen-buttons-div{
+  padding: 20px;
+  background-color: #eff1f4;
+  display: inline-block;
+}
+
+.text-weight-bold{
+  font-weight: 800;
+}
+
+button.default-screen-button {
+  margin-left: 0px;
+  margin-right: 0px;
+  margin-top: 6px;
+  margin-bottom: 6px;
+  padding: 6px;
+  line-height: 1.2;
+  width: 200px;
+  font-size: 10pt;
+}
+
+div.spinner
+{
+    display: none;
+    width:100px;
+    height: 100px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    background:url(spinnerLarge.gif) no-repeat center #fff;
+    text-align:center;
+    padding:10px;
+    font:normal 16px Tahoma, Geneva, sans-serif;
+    border:1px solid #666;
+    margin-left: -50px;
+    margin-top: -50px;
+    z-index:2;
+    overflow: auto;
+}
+
+

@@ -1015,8 +1015,6 @@ namespace LoanStop.DBCore.Repository
 
             }
 
-            string ids = "0";
-
             decimal maxApr = 0;
             decimal minApr = 1000;
 
@@ -1066,8 +1064,6 @@ namespace LoanStop.DBCore.Repository
                 }
 
             }
-
-
 
             return new { maxApr = maxApr, minApr = minApr };
 

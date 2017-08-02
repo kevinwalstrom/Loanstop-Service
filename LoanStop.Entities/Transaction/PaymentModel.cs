@@ -28,6 +28,7 @@ namespace LoanStop.Entities.Transaction
         public int PaymentNumber {get; set;} 
         public string Status {get; set;}
         public DateTime PaymentDate {get; set;}
+        public bool AcceptCash { get; set; }
     }
 
     public class PaymentTableModel

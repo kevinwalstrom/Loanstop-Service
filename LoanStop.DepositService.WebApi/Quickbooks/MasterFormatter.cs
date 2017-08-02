@@ -193,8 +193,8 @@ namespace LoanStop.Services.WebApi.Quickbooks
             rtrn.AddRange(wyomingDefault(defaulted));
 
 			//paymentstodefault
-            var paymentstodefault = rep.ExportLineItem("paymentstodefault",startDate, endDate);
-            rtrn.AddRange(paidtodefault(paymentstodefault));
+            //var paymentstodefault = rep.ExportLineItem("paymentstodefault",startDate, endDate);
+            //rtrn.AddRange(paidtodefault(paymentstodefault));
 
             //transfers
             var transfers = rep.ExportLineItem("transfers",startDate, endDate);

@@ -87,6 +87,22 @@ namespace LoanStop.DBCore.Repository
             return returnValue;
         }
 
+        public List<LoanStopModel.Payment> GetPaymentNumberEqualsNullForTransaction(long transactionId)
+        {
+            List<LoanStopModel.Payment> returnValue = null;
+
+            using (var db = new Entity.LoanStopEntities(ConnectionString))
+            {
+                var query = db.Payments.Where(s => s.TransactionId == transactionId && s.PaymentNumber == null);
+
+                if (query.Count() > 0)
+                {
+                    returnValue = query.ToList();
+                }
+            }
+
+            return returnValue;
+        }
 
     }
 

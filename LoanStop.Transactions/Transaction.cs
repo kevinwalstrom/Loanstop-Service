@@ -500,8 +500,8 @@ namespace LoanStop.Transactions
 			var cashLog = new LoanStopModel.CashLog();
 			cashLog.TransactionType = "Revenue";
 			cashLog.Category = "Revenue";
-			cashLog.Description = "Pd Cash";
-			cashLog.Amount = model.AmountPaid;
+			cashLog.Description = model.AcceptCash ?  "Pd Cash" : "Apply to Balance" ;
+			cashLog.Amount = model.AcceptCash ? model.AmountPaid : 0;
 			cashLog.Type = "credit";
 			cashLog.PayableTo = client.Firstname + " " + client.Lastname;
 			cashLog.SsNumber = client.SsNumber;
@@ -623,9 +623,9 @@ namespace LoanStop.Transactions
 			var cashLog = new LoanStopModel.CashLog();
 			cashLog.TransactionType = "Revenue";
 			cashLog.Category = "Revenue";
-			cashLog.Description = "Pd Cash";
-			cashLog.Amount = model.AmountPaid;
-			cashLog.Type = "credit";
+			cashLog.Description = model.AcceptCash ? "Pd Cash" : "Applied Payment";
+            cashLog.Amount = model.AcceptCash ? model.AmountPaid : 0;
+            cashLog.Type = "credit";
 			cashLog.PayableTo = client.Firstname + " " + client.Lastname;
 			cashLog.SsNumber = client.SsNumber;
 			cashLog.TransactionNumber = trans.Id;
@@ -734,9 +734,9 @@ namespace LoanStop.Transactions
 			var cashLog = new LoanStopModel.CashLog();
 			cashLog.TransactionType = "Revenue";
 			cashLog.Category = "Revenue";
-			cashLog.Description = "Pd Cash";
-			cashLog.Amount = model.AmountPaid;
-			cashLog.Type = "credit";
+			cashLog.Description = model.AcceptCash ? "Pd Cash" : "Apply to Balance";
+            cashLog.Amount = model.AcceptCash ? model.AmountPaid : 0;
+            cashLog.Type = "credit";
 			cashLog.PayableTo = client.Firstname + " " + client.Lastname;
 			cashLog.SsNumber = client.SsNumber;
 			cashLog.TransactionNumber = trans.Id;
@@ -826,9 +826,9 @@ namespace LoanStop.Transactions
 				var cashLog = new LoanStopModel.CashLog();
 				cashLog.TransactionType = "Revenue";
 				cashLog.Category = "Revenue";
-				cashLog.Description = "Pd Cash";
-				cashLog.Amount = model.AmountPaid;
-				cashLog.Type = "credit";
+				cashLog.Description = model.AcceptCash ? "Pd Cash" : "Applied Payment";
+                cashLog.Amount = model.AcceptCash ? model.AmountPaid : 0;
+                cashLog.Type = "credit";
 				cashLog.PayableTo = client.Firstname + " " + client.Lastname;
 				cashLog.SsNumber = client.SsNumber;
 				cashLog.TransactionNumber = trans.Id;
@@ -930,9 +930,9 @@ namespace LoanStop.Transactions
 			var cashLog = new LoanStopModel.CashLog();
 			cashLog.TransactionType = "Revenue";
 			cashLog.Category = "Revenue";
-			cashLog.Description = "Pd Cash";
-			cashLog.Amount = model.AmountPaid;
-			cashLog.Type = "credit";
+			cashLog.Description = model.AcceptCash ? "Pd Cash" : "Applied Payment";
+            cashLog.Amount = model.AcceptCash ? model.AmountPaid : 0;
+            cashLog.Type = "credit";
 			cashLog.PayableTo = client.Firstname + " " + client.Lastname;
 			cashLog.SsNumber = client.SsNumber;
 			cashLog.TransactionNumber = trans.Id;
@@ -1565,6 +1565,54 @@ namespace LoanStop.Transactions
 
         }
 
+        public long CreatePaydayLoan(NewPaydayLoanModel model)
+        {
+            var transaction = new LoanStopModel.Transaction();
+            transaction.CheckType = 0;
+            transaction.AmountDispursed = model.amountDisbursed;
+            transaction.AmountRecieved = model.amountReceived;
+            transaction.CheckNumber = model.checkNumber;
+            transaction.DispursedAs = "CASH";
+            transaction.SsNumber = model.ssNumber;
+            transaction.Name = model.name;
+            transaction.TransDate = model.transDate;
+            transaction.DateDue = model.dateDue;
+            transaction.Status = model.paymentPreference;
+            transaction.Location = defaults.StoreCode;
+            transaction.Consecutive = model.consecutive;   
+
+            transaction = transRepository.Add(transaction);
+
+            var cashLog = new LoanStopModel.CashLog();
+            cashLog.TransactionType = "Loan";
+            cashLog.Category = "Loan";
+            cashLog.Description = "Payday Loan";
+            cashLog.Amount = -model.amountDisbursed;
+            cashLog.Type = "debit";
+            cashLog.PayableTo = model.name ;
+            cashLog.SsNumber = model.ssNumber;
+            cashLog.TransactionNumber = transaction.Id;
+            cashLog.Date = model.transDate;
+            cashLog.Timestamp  = DateTime.Now ;
+            cashRepository.Add(cashLog);
+
+            return transaction.Id;
+        }
+
+        public void CreatePaymentPlan(NewPaymentPlanModel model)
+        {
+
+            var transaction = transRepository.GetById(model.transId);
+            var client = clientRepository.GetBySSNumber(model.ssNumber);
+
+            foreach (var payment in model.paymentPlanRecords)
+            {
+                CreateInstallmentRecord(client, transaction.Id, payment.DateDue, payment.AmountDue , payment.CheckNumber, payment.Status, payment.HoldDate);
+            }
+
+        }
+
+
         #endregion
 
         #region private
@@ -1649,7 +1697,7 @@ namespace LoanStop.Transactions
             return prepaidFinanceCharge;
         }
  
-        private void CreateInstallmentRecord(LoanStopModel.Client client, long TransactionId, DateTime PaymentDay, decimal MonthlyPayment,string CheckNumber, string PaymentPreference, DateTime? holdDate)
+        private void CreateInstallmentRecord(LoanStopModel.Client client, long TransactionId, DateTime PaymentDay, decimal MonthlyPayment,string CheckNumber, string status, DateTime? holdDate)
         {
 //            Repository.PaymentPlanCheck ppcRepository = new Repository.PaymentPlanCheck(ConnectionString);
 
@@ -1667,7 +1715,7 @@ namespace LoanStop.Transactions
             ppc.DateCleared = null;
             ppc.DatePaid = null;
             ppc.DateDue = PaymentDay;
-            ppc.Status = PaymentPreference;
+            ppc.Status = status;
             ppc.TransDate = DateTime.Now.Date;
 
             ppcRepository.Add(ppc);

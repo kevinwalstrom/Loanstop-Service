@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<RoleModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LoanStop.Services.WebApi" version="2.5.6499.15" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
+<RoleModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LoanStop.Services.WebApi" version="2.9.6496.3" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceDefinition">
   <Startup>
     <Task commandLine="RemoteAccessAgent.exe" executionContext="elevated" taskType="background" relativePath="plugins\RemoteAccess">
       <Environment>
@@ -55,14 +55,14 @@
     <Property name="SetConfiguration" value="Configuration=Release" />
     <Property name="SetPlatform" value="Platform=AnyCPU" />
     <Property name="RoleTargetFramework" value="v4.5" />
-    <Property name="OutputDir" value="D:\GitHub\loanstop\LoanStop.Services.Azure\obj\Release\LoanStop.Services.WebApi\" />
+    <Property name="OutputDir" value="C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Release\LoanStop.Services.WebApi\" />
     <Property name="EntryPoint" value="LoanStop.Services.WebApi.dll" />
-    <Property name="SourceDir" value="D:\GitHub\loanstop\LoanStop.DepositService\LoanStop.DepositService.WebApi\" />
-    <Property name="SitePhysicalPath" value="D:\GitHub\loanstop\LoanStop.Services.Azure\obj\Release\LoanStop.Services.WebApi\" />
+    <Property name="SourceDir" value="C:\GitHub\loanstop\Service\LoanStop.DepositService.WebApi\" />
+    <Property name="SitePhysicalPath" value="C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Release\LoanStop.Services.WebApi\" />
     <Property name="TargetRuntimeVersion" value="v4.0" />
   </Properties>
   <Sites>
-    <Site name="Web" physicalDirectory="D:\GitHub\loanstop\LoanStop.Services.Azure\obj\Release\LoanStop.Services.WebApi\">
+    <Site name="Web" physicalDirectory="C:\GitHub\loanstop\Service\LoanStop.Services.Azure\obj\Release\LoanStop.Services.WebApi\">
       <Bindings>
         <Binding name="Endpoint1" endpointName="Endpoint1" />
       </Bindings>

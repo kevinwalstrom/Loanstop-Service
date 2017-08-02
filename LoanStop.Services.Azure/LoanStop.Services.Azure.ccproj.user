@@ -4,7 +4,7 @@
     <PackageProfile>Cloud</PackageProfile>
     <PackageSolutionConfiguration>Debug</PackageSolutionConfiguration>
     <PackageEnableRemoteDesktop>True</PackageEnableRemoteDesktop>
-    <ActivePublishProfile>loanstopStaging</ActivePublishProfile>
+    <ActivePublishProfile>loanstop production</ActivePublishProfile>
     <DeploymentProfilingMode>Sampling</DeploymentProfilingMode>
     <DeploymentEnableTierInteractionProfiling>False</DeploymentEnableTierInteractionProfiling>
     <RemoteDesktopMoreOptions>False</RemoteDesktopMoreOptions>

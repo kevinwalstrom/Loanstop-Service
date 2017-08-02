@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LoanStop.Services.Azure" generation="1" functional="0" release="0" Id="393f7906-1ba2-4c2b-b070-430c3ce0035a" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LoanStop.Services.Azure" generation="1" functional="0" release="0" Id="42776fe4-85a7-4074-9cff-5981ee8ddc20" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="LoanStop.Services.AzureGroup" generation="1" functional="0" release="0">
       <componentports>
@@ -80,6 +80,11 @@
         <sFSwitchChannel name="IE:LoanStop.Services.WebApi:Microsoft.WindowsAzure.Plugins.RemoteDebugger.Connector">
           <toPorts>
             <inPortMoniker name="/LoanStop.Services.Azure/LoanStop.Services.AzureGroup/LoanStop.Services.WebApi/Microsoft.WindowsAzure.Plugins.RemoteDebugger.Connector" />
+          </toPorts>
+        </sFSwitchChannel>
+        <sFSwitchChannel name="IE:LoanStop.Services.WebApi:Microsoft.WindowsAzure.Plugins.RemoteDebugger.FileUpload">
+          <toPorts>
+            <inPortMoniker name="/LoanStop.Services.Azure/LoanStop.Services.AzureGroup/LoanStop.Services.WebApi/Microsoft.WindowsAzure.Plugins.RemoteDebugger.FileUpload" />
           </toPorts>
         </sFSwitchChannel>
         <sFSwitchChannel name="IE:LoanStop.Services.WebApi:Microsoft.WindowsAzure.Plugins.RemoteDebugger.Forwarder">
@@ -167,7 +172,7 @@
       </maps>
       <components>
         <groupHascomponents>
-          <role name="LoanStop.Services.WebApi" generation="1" functional="0" release="0" software="D:\GitHub\loanstop\LoanStop.Services.Azure\csx\Release\roles\LoanStop.Services.WebApi" entryPoint="base\x64\WaHostBootstrapper.exe" parameters="base\x64\WaIISHost.exe " memIndex="-1" hostingEnvironment="frontendadmin" hostingEnvironmentVersion="2">
+          <role name="LoanStop.Services.WebApi" generation="1" functional="0" release="0" software="C:\GitHub\loanstop\Service\LoanStop.Services.Azure\csx\Release\roles\LoanStop.Services.WebApi" entryPoint="base\x64\WaHostBootstrapper.exe" parameters="base\x64\WaIISHost.exe " memIndex="-1" hostingEnvironment="frontendadmin" hostingEnvironmentVersion="2">
             <componentports>
               <inPort name="Endpoint1" protocol="http" portRanges="8080" />
               <inPort name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput" protocol="tcp" />
@@ -188,7 +193,7 @@
               <aCS name="Microsoft.WindowsAzure.Plugins.RemoteDebugger.Connector.Version" defaultValue="" />
               <aCS name="Microsoft.WindowsAzure.Plugins.RemoteDebugger.ServerThumbprint" defaultValue="" />
               <aCS name="Microsoft.WindowsAzure.Plugins.RemoteForwarder.Enabled" defaultValue="" />
-              <aCS name="__ModelData" defaultValue="&lt;m role=&quot;LoanStop.Services.WebApi&quot; xmlns=&quot;urn:azure:m:v1&quot;&gt;&lt;r name=&quot;LoanStop.Services.WebApi&quot;&gt;&lt;e name=&quot;Endpoint1&quot; /&gt;&lt;e name=&quot;Microsoft.WindowsAzure.Plugins.RemoteAccess.Rdp&quot; /&gt;&lt;e name=&quot;Microsoft.WindowsAzure.Plugins.RemoteDebugger.Connector&quot; /&gt;&lt;e name=&quot;Microsoft.WindowsAzure.Plugins.RemoteDebugger.Forwarder&quot; /&gt;&lt;e name=&quot;Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput&quot; /&gt;&lt;/r&gt;&lt;/m&gt;" />
+              <aCS name="__ModelData" defaultValue="&lt;m role=&quot;LoanStop.Services.WebApi&quot; xmlns=&quot;urn:azure:m:v1&quot;&gt;&lt;r name=&quot;LoanStop.Services.WebApi&quot;&gt;&lt;e name=&quot;Endpoint1&quot; /&gt;&lt;e name=&quot;Microsoft.WindowsAzure.Plugins.RemoteAccess.Rdp&quot; /&gt;&lt;e name=&quot;Microsoft.WindowsAzure.Plugins.RemoteDebugger.Connector&quot; /&gt;&lt;e name=&quot;Microsoft.WindowsAzure.Plugins.RemoteDebugger.FileUpload&quot; /&gt;&lt;e name=&quot;Microsoft.WindowsAzure.Plugins.RemoteDebugger.Forwarder&quot; /&gt;&lt;e name=&quot;Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput&quot; /&gt;&lt;/r&gt;&lt;/m&gt;" />
             </settings>
             <resourcereferences>
               <resourceReference name="DiagnosticStore" defaultAmount="[4096,4096,4096]" defaultSticky="true" kind="Directory" />
@@ -226,14 +231,14 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="d0736bb9-c68e-4809-9bd5-fed17bef2d83" ref="Microsoft.RedDog.Contract\ServiceContract\LoanStop.Services.AzureContract@ServiceDefinition">
+    <implementation Id="24b44be2-99b9-4c2d-b7ac-0b619a5fd383" ref="Microsoft.RedDog.Contract\ServiceContract\LoanStop.Services.AzureContract@ServiceDefinition">
       <interfacereferences>
-        <interfaceReference Id="fc07673b-6d0e-482b-a61b-9394236e1c67" ref="Microsoft.RedDog.Contract\Interface\LoanStop.Services.WebApi:Endpoint1@ServiceDefinition">
+        <interfaceReference Id="12d2013f-3941-4458-b78c-d57f2caac521" ref="Microsoft.RedDog.Contract\Interface\LoanStop.Services.WebApi:Endpoint1@ServiceDefinition">
           <inPort>
             <inPortMoniker name="/LoanStop.Services.Azure/LoanStop.Services.AzureGroup/LoanStop.Services.WebApi:Endpoint1" />
           </inPort>
         </interfaceReference>
-        <interfaceReference Id="909ff4a0-7704-4051-b011-e9be81a269f4" ref="Microsoft.RedDog.Contract\Interface\LoanStop.Services.WebApi:Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput@ServiceDefinition">
+        <interfaceReference Id="10534bc2-f297-4f84-b534-3251696818d4" ref="Microsoft.RedDog.Contract\Interface\LoanStop.Services.WebApi:Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput@ServiceDefinition">
           <inPort>
             <inPortMoniker name="/LoanStop.Services.Azure/LoanStop.Services.AzureGroup/LoanStop.Services.WebApi:Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput" />
           </inPort>

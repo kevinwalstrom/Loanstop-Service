@@ -582,7 +582,7 @@ namespace LoanStop.Services.WebApi.Quickbooks
                 Name = record.catagory,
                 Amount = record.amount,
                 Docnum = "",//record.doc_num,
-                Memo = "Transfer From CORPORATE " + bankAccount2
+                Memo = "Transfer From CORPORATE " + bankAccount
             };
         
             var spl = new QbEntity()
@@ -594,7 +594,7 @@ namespace LoanStop.Services.WebApi.Quickbooks
                 Name = record.catagory,
                 Amount = -record.amount,
                 Docnum = "",//record.doc_num,
-                Memo = "Transfer From CORPORATE " + bankAccount2
+                Memo = "Transfer From CORPORATE " + bankAccount
             };
 
             var rtrn = new List<string>();
@@ -618,7 +618,7 @@ namespace LoanStop.Services.WebApi.Quickbooks
                 Trns="TRNS",
                 TrnsType= "&CHECK",
                 Date = record.export_date,
-                Accnt = string.Format(BANK_ACCOUNT2, bankAccount2, bankName2),
+                Accnt = string.Format(BANK_ACCOUNT, bankAccount, bankName),
                 Name = record.catagory,
                 Amount = -record.amount,
                 Docnum = "",//record.doc_num,

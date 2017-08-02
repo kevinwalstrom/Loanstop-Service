@@ -31,5 +31,37 @@ namespace LoanStop.Entities.Transaction
         public List<InstallmentRecord> Records { get; set;}
     }
 
+    public class NewPaydayLoanModel
+    {
+        public decimal amountDisbursed { get; set; }
+        public decimal amountReceived { get; set; }
+        public string ssNumber { get; set; }
+        public string name { get; set; }
+        public int consecutive { get; set; }
+        public string paymentPreference { get; set; }
+        public decimal paymentAmount { get; set; }
+        public DateTime dateDue { get; set; }
+        public DateTime transDate { get; set; }
+        public string StoreCode { get; set; }
+        public int checkNumber { get; set; }
+    }
+
+    public class NewPaymentPlanModel
+    {
+        public string ssNumber { get; set; }
+        public string name { get; set; }
+        public long transId { get; set; }
+        public List<CWyPaymentPlanItem> paymentPlanRecords { get; set; }
+        public string StoreCode { get; set; }
+    }
+    
+    public class CWyPaymentPlanItem
+    {
+        public DateTime DateDue;
+        public DateTime? HoldDate;
+        public decimal AmountDue;
+        public string Status;
+        public string CheckNumber;
+    }
 
 }

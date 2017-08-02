@@ -277,7 +277,6 @@ namespace LoanStop.DBCore.Repository
 
         public void UpdateNotes(string ssNumber, string note)
         {
-            List<string> rtrn = null;
    
             using (var db = new Entity.LoanStopEntities(ConnectionString))
             {

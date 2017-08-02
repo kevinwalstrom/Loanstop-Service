@@ -470,5 +470,52 @@ namespace LoanStop.Services.WebApi.Controllers
 
         }
 
-	}
+        [HttpPost]
+        [Route("api/transaction/createpaydayloan/{state}/{store}")]
+        public ResponseType CreatePaydayLoan(string state, string store, NewPaydayLoanModel model)
+        {
+            var response = new ResponseType();
+
+            var connectionItem = Connections.Items.Where(s => s.DatabaseName == store).FirstOrDefault();
+
+            var defaults = Defaults.Items.Where(s => s.Store.ToLower() == store.ToLower()).FirstOrDefault();
+
+            var trans = new Transaction(store.ToLower(), connectionItem.ConnectionString(), defaults);
+
+            response.Item = trans.CreatePaydayLoan(model);
+
+            return response;
+
+        }
+
+        [HttpPost]
+        [Route("api/transaction/createpaymentplan/{state}/{store}")]
+        public ResponseType CreatePaymentPlan(string state, string store, NewPaymentPlanModel model)
+        {
+            var response = new ResponseType();
+
+            var connectionItem = Connections.Items.Where(s => s.DatabaseName == store).FirstOrDefault();
+
+            var defaults = Defaults.Items.Where(s => s.Store.ToLower() == store.ToLower()).FirstOrDefault();
+
+            if (state.ToUpper() == "WYOMING")
+            {
+                var trans = new Transaction(store.ToLower(), connectionItem.ConnectionString(), defaults);
+
+                trans.CreatePaymentPlan(model);
+
+            }
+
+            if (state.ToUpper() == "COLORADO")
+            {
+
+            }
+
+
+            return response;
+
+        }
+
+
+    }
 }

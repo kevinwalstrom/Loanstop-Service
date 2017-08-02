@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Repository = LoanStop.DBCore.Repository;
+using EricSummary = LoanStop.DBCore.EricSummary;
 using LoanStop.Entities.Reports;
 
 namespace LoanStop.Reports
@@ -42,8 +43,13 @@ namespace LoanStop.Reports
             }
             
             if (this.state.ToLower() == "colorado")
-            { 
-                summary.AmountReceived = rep.AmountReceived(startDate, endDate);
+            {
+                var item = new EricSummary.AmountReceived(connectionString);
+                var payments = item.ExecutePayments(startDate, endDate);
+
+                var payoffs = item.ExecutePayoffs(startDate, endDate);
+
+                summary.AmountReceived = payments + payoffs;
             }
             else
             { 

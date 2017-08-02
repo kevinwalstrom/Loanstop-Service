@@ -147,9 +147,25 @@ namespace LoanStop.Services.WebApi.Business.Client
 
             using (var masterDb = new Entity.MasterDb())
             {
-                bool bNew = false;
 
-                try { 
+                try {
+
+                    string cmd = $"SELECT id FROM master_client WHERE ss_number='{model.SsNumber}'";
+
+                    var query = masterDb.Database.SqlQuery<int?>(cmd);
+
+                    if (query.FirstOrDefault() != null)
+                    {
+                        string update = $"UPDATE master_client SET firstname='{model.Firstname}', lastname='{model.Lastname}', store='{model.Store}'  WHERE ss_number='{model.SsNumber}'";
+                        masterDb.Database.ExecuteSqlCommand(update);
+                    }
+                    else
+                    {
+                        string insert = $"INSERT master_client (firstname,lastname,mi,ss_number,store) VALUES ('{model.Firstname}','{model.Lastname}','{model.Mi}','{model.SsNumber}','{model.Store}')";
+                        masterDb.Database.ExecuteSqlCommand(insert);
+                    }
+
+                    /*
                     masterItem = masterDb.MasterClients.Where(c => c.SsNumber == model.SsNumber).FirstOrDefault();
 
                     if (masterItem == null)
@@ -196,6 +212,8 @@ namespace LoanStop.Services.WebApi.Business.Client
                     }
             
                     masterDb.SaveChanges();
+
+                    */
                 }
                 catch (Exception ex)
                 {

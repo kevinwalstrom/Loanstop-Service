@@ -128,19 +128,31 @@ namespace LoanStop.DBCore.Repository
         {
             IDictionary<string, string> rtrn = new Dictionary<string, string>();
 
+            var cmd = $"SELECT store FROM master_client WHERE ss_number='{ssNumber}'";
+
             using (var db = new MasterDb())
             {
-                var client = db.MasterClients.Where(s => s.SsNumber == ssNumber);
-            
-                if (client.Count() > 0)
+                try
                 {
-                    rtrn.Add("IsClient","true");
-                    rtrn.Add("Store",client.FirstOrDefault().Store);
+                    var client = db.Database.SqlQuery<string>(cmd);
+
+                    var store = client.FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(store))
+                    {
+                        rtrn.Add("IsClient", "true");
+                        rtrn.Add("Store", store);
+                    }
+                    else
+                    {
+                        rtrn.Add("IsClient", "false");
+                        rtrn.Add("Store", "none");
+                    }
                 }
-                else
+                catch (Exception ex)
                 {
-                    rtrn.Add("IsClient","false");
-                    rtrn.Add("Store","none");
+                    rtrn.Add("IsClient", "false");
+                    rtrn.Add("Store", ex.Message);
                 }
             }
 

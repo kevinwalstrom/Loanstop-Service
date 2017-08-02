@@ -67,6 +67,7 @@
       <HintPath>..\packages\Unity.4.0.1\lib\net45\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.Web.Infrastructure, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Web.Infrastructure.1.0.0.0\lib\net40\Microsoft.Web.Infrastructure.dll</HintPath>
       <Private>True</Private>
@@ -191,14 +192,19 @@
     <Compile Include="Business\Aging.cs" />
     <Compile Include="Business\Client\SaveClient.cs" />
     <Compile Include="Business\Colorado\IsNewLoanEnabled.cs" />
+    <Compile Include="Business\Colorado\LoanUtilities.cs" />
     <Compile Include="Business\Consecutive.cs" />
+    <Compile Include="Business\DeafultScreen\DefaultScreen.cs" />
     <Compile Include="Business\IIsNewLoanEnabled.cs" />
+    <Compile Include="Business\PaymentScreen.cs" />
     <Compile Include="Business\Wyoming\IsNewLoanEnabled.cs" />
     <Compile Include="Business\Wyoming\PaymentPlan.cs" />
     <Compile Include="Controllers\AccountingController.cs" />
     <Compile Include="Controllers\ACHWorksController.cs" />
     <Compile Include="Controllers\DefaultsController.cs" />
+    <Compile Include="Controllers\DefaultScreenController.cs" />
     <Compile Include="Controllers\MainController.cs" />
+    <Compile Include="Controllers\PaymentController.cs" />
     <Compile Include="Controllers\ReportsController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
     <Compile Include="Controllers\TrackingController.cs" />
@@ -250,6 +256,10 @@
     <Compile Include="Reports\ColoradoYearly.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="default-screen\app\assets\defaultscreen.js" />
+    <Content Include="default-screen\app\default-screen.css" />
+    <Content Include="default-screen\app\default-screen.html" />
+    <Content Include="DefaultScreen.html" />
     <Content Include="favicon.ico" />
     <Content Include="Global.asax" />
     <Content Include="Web.config">
