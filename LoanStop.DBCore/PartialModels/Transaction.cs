@@ -75,9 +75,12 @@ namespace LoanStopModel
                         if (p.Status != "Void")
                         {
                             if (p.HoldDate.HasValue)
-                                finalPaymentDay = (DateTime)p.HoldDate;
-                            else if (p.DateDue.HasValue)
-                                finalPaymentDay = (DateTime)p.DateDue;
+                                if ((DateTime)p.HoldDate > finalPaymentDay)
+                                {
+                                    finalPaymentDay = (DateTime)p.HoldDate;
+                                }
+                                else if (p.DateDue.HasValue)
+                                    finalPaymentDay = (DateTime)p.DateDue;
                         }
                     }
                 }

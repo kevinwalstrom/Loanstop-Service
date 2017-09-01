@@ -201,6 +201,7 @@
     <Compile Include="Business\Wyoming\PaymentPlan.cs" />
     <Compile Include="Controllers\AccountingController.cs" />
     <Compile Include="Controllers\ACHWorksController.cs" />
+    <Compile Include="Controllers\CollectionsController.cs" />
     <Compile Include="Controllers\DefaultsController.cs" />
     <Compile Include="Controllers\DefaultScreenController.cs" />
     <Compile Include="Controllers\MainController.cs" />
@@ -242,6 +243,9 @@
     <Compile Include="Quickbooks\LoanWyoming.cs" />
     <Compile Include="Quickbooks\MasterFormatter.cs" />
     <Compile Include="Quickbooks\QbEntity.cs" />
+    <Compile Include="Reports\Aging.cs" />
+    <Compile Include="Reports\AverageLoanAmount.cs" />
+    <Compile Include="Reports\Collections.cs" />
     <Compile Include="Reports\DailyBalance\StoreDetail.cs" />
     <Compile Include="Reports\DailyBalance\StoreSummary.cs" />
     <Compile Include="Reports\DailyBalance\Summary.cs" />
@@ -250,6 +254,7 @@
     <Compile Include="Reports\ExportAll.cs" />
     <Compile Include="Reports\ExportLineItem.cs" />
     <Compile Include="Reports\KristiSummary.cs" />
+    <Compile Include="Reports\Outsourced.cs" />
     <Compile Include="Reports\SumColoradoStores.cs" />
     <Compile Include="Reports\WyomingYearly.cs" />
     <Compile Include="WyomingAudit\Report.cs" />

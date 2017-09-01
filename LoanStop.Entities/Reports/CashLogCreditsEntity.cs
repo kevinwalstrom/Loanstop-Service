@@ -12,4 +12,12 @@ namespace LoanStop.Entities.Reports
         public decimal amount { get; set; }
 
     }
+
+    public class AgingEntity
+    {
+        public string TransactionState { get; set; }
+        public string AgingRange { get; set; }
+        public int NumberOfTransactions { get; set; }
+    }
+
 }

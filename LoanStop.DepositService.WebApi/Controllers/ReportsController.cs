@@ -465,6 +465,106 @@ namespace LoanStop.Services.WebApi.Controllers
         }
 
 
+        [HttpGet]
+        [Route("api/report/outsourced/{startReportDate}")]
+        [EnableCors(origins: "http://localhost:8080, http://test.loanstop.com, http://localhost:49291, http://ls-server", headers: "*", methods: "*")]
+        public IHttpActionResult outsourced(DateTime startReportDate)
+        {
+            ResponseType returnReport = null;
+
+            var stores = Connections.Items.Where(s => s.State.ToLower() == "colorado").ToList();
+
+            //var stores = Connections.Items.Where(s => s.StoreName.ToLower() == "arvada").ToList();
+
+            stores.Remove(stores.Where(s => s.DatabaseName == "closed_stores").FirstOrDefault());
+            var report = new Outsourced(stores);
+
+
+            try
+            {
+                returnReport = new ResponseType();
+                returnReport.Item = report.Execute(startReportDate);
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+
+            return Ok(returnReport);
+
+        }
+
+        [HttpGet]
+        [Route("api/report/aging")]
+        [EnableCors(origins: "http://localhost:8080, http://test.loanstop.com, http://localhost:49291, http://ls-server", headers: "*", methods: "*")]
+        public IHttpActionResult aging()
+        {
+            ResponseType returnReport = null;
+
+            var stores = Connections.Items.Where(s => s.State.ToLower() == "colorado").ToList();
+
+            //var stores = Connections.Items.Where(s => s.StoreName.ToLower() == "arvada").ToList();
+
+            stores.Remove(stores.Where(s => s.DatabaseName == "closed_stores").FirstOrDefault());
+            var report = new Aging(stores);
+
+
+            try
+            {
+                returnReport = new ResponseType();
+                returnReport.Item = report.Execute();
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+
+            return Ok(returnReport);
+
+        }
+
+        [HttpGet]
+        [Route("api/report/averageloanamount/{theDate}")]
+        [EnableCors(origins: "http://localhost:8080, http://test.loanstop.com, http://localhost:49291, http://ls-server", headers: "*", methods: "*")]
+        public IHttpActionResult averageloanamount(DateTime theDate)
+        {
+            ResponseType returnReport = null;
+            
+
+            var coloradoStores = Connections.Items.Where(s => s.State.ToLower() == "colorado").ToList();
+
+            //var stores = Connections.Items.Where(s => s.StoreName.ToLower() == "arvada").ToList();
+
+            coloradoStores.Remove(coloradoStores.Where(s => s.DatabaseName == "closed_stores").FirstOrDefault());
+
+            var wyomingStores = Connections.Items.Where(s => s.State.ToLower() == "wyoming").ToList();
+
+            try
+            {
+                returnReport = new ResponseType();
+
+                var reportColorado = new AverageLoanAmount(coloradoStores);
+                var Colorado = reportColorado.Colorado(theDate);
+
+                var reportWyoming = new AverageLoanAmount(wyomingStores);
+                var Wyoming = reportWyoming.Wyoming(theDate);
+
+                returnReport.Item = new { colorado = Colorado, wyoming = Wyoming };
+            }
+            catch (Exception ex)
+            {
+                return InternalServerError(ex);
+            }
+
+
+            return Ok(returnReport);
+
+        }
+
+
+
         protected ResponseType coloradoStateSummaryAll(int year)
         {
 

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LoanStop.Services.Azure" generation="1" functional="0" release="0" Id="42776fe4-85a7-4074-9cff-5981ee8ddc20" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
+<serviceModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" name="LoanStop.Services.Azure" generation="1" functional="0" release="0" Id="49591ab6-839b-4a84-83f3-84d330a33451" dslVersion="1.2.0.0" xmlns="http://schemas.microsoft.com/dsltools/RDSM">
   <groups>
     <group name="LoanStop.Services.AzureGroup" generation="1" functional="0" release="0">
       <componentports>
@@ -231,14 +231,14 @@
     </group>
   </groups>
   <implements>
-    <implementation Id="24b44be2-99b9-4c2d-b7ac-0b619a5fd383" ref="Microsoft.RedDog.Contract\ServiceContract\LoanStop.Services.AzureContract@ServiceDefinition">
+    <implementation Id="fc7b98b1-c7cf-4f6b-91f8-02564dc4e356" ref="Microsoft.RedDog.Contract\ServiceContract\LoanStop.Services.AzureContract@ServiceDefinition">
       <interfacereferences>
-        <interfaceReference Id="12d2013f-3941-4458-b78c-d57f2caac521" ref="Microsoft.RedDog.Contract\Interface\LoanStop.Services.WebApi:Endpoint1@ServiceDefinition">
+        <interfaceReference Id="5744d7dd-83f9-4a23-b674-e79316dcef9f" ref="Microsoft.RedDog.Contract\Interface\LoanStop.Services.WebApi:Endpoint1@ServiceDefinition">
           <inPort>
             <inPortMoniker name="/LoanStop.Services.Azure/LoanStop.Services.AzureGroup/LoanStop.Services.WebApi:Endpoint1" />
           </inPort>
         </interfaceReference>
-        <interfaceReference Id="10534bc2-f297-4f84-b534-3251696818d4" ref="Microsoft.RedDog.Contract\Interface\LoanStop.Services.WebApi:Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput@ServiceDefinition">
+        <interfaceReference Id="39c03c69-d20f-4d12-b65c-5136a3467f2d" ref="Microsoft.RedDog.Contract\Interface\LoanStop.Services.WebApi:Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput@ServiceDefinition">
           <inPort>
             <inPortMoniker name="/LoanStop.Services.Azure/LoanStop.Services.AzureGroup/LoanStop.Services.WebApi:Microsoft.WindowsAzure.Plugins.RemoteForwarder.RdpInput" />
           </inPort>

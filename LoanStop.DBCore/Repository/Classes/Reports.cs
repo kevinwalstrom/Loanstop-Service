@@ -944,5 +944,177 @@ namespace LoanStop.DBCore.Repository
             return returnValue.Value;
         }
 
+
+        public decimal StoreCollect(DateTime startDate, DateTime endDate)
+        {
+            decimal? returnValue = 0;
+            using (var db = new Entity.LoanStopEntities(connectionString))
+            {
+                string command = string.Format(
+                @"
+                    SELECT count(*)   
+                    FROM transactions
+                    JOIN payment_plan_checks on transactions.id = payment_plan_checks.transaction_id
+                    WHERE 
+                        payment_plan_checks.date_returned IS NOT NULL and transactions.date_returned IS NULL
+                            AND 
+                        payment_plan_checks.date_returned >= '{0}' AND payment_plan_checks.date_returned < '{1}'
+                ",
+                startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+
+                command = command.Replace("\r\n", "");
+                command = command.Replace("\n", "");
+
+                var query = db.Database.SqlQuery<decimal?>(command);
+
+                if (query.FirstOrDefault<decimal?>() != null)
+                    returnValue = query.FirstOrDefault<decimal?>();
+            }
+
+            return returnValue.Value;
+        }
+
+        public decimal Outsourced(DateTime startDate, DateTime endDate)
+        {
+            decimal? returnValue = 0;
+            using (var db = new Entity.LoanStopEntities(connectionString))
+            {
+                string command = string.Format(
+                @"
+                    SELECT count(*)   
+                    FROM transactions
+                    JOIN payment_plan_checks on transactions.id = payment_plan_checks.transaction_id
+                    WHERE 
+                        payment_plan_checks.date_returned IS NOT NULL and transactions.date_returned IS NOT NULL
+                            AND 
+                        payment_plan_checks.date_returned >= '{0}' AND payment_plan_checks.date_returned < '{1}'
+                ",
+                startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+
+                command = command.Replace("\r\n", "");
+                command = command.Replace("\n", "");
+
+                var query = db.Database.SqlQuery<decimal?>(command);
+
+                if (query.FirstOrDefault<decimal?>() != null)
+                    returnValue = query.FirstOrDefault<decimal?>();
+            }
+
+            return returnValue.Value;
+        }
+
+        public List<AgingEntity> Aging()
+        {
+            List<AgingEntity> returnValue = new List<AgingEntity>();
+
+            using (var db = new Entity.LoanStopEntities(connectionString))
+            {
+                string command = string.Format(
+                @"
+                    SELECT 'Current', count(*), aging from 
+                    (  
+                      select case    
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 0 and 30 then '0-30'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 31 and 60   then '31-60'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 61 and 90  then '61-90'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 91 and 120  then '91-120'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 121 and 150  then '121-150'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 151 and 180  then '151-180'
+                        else 'greater than 180'
+                        end as aging
+                      from (
+	                    select * FROM transactions where status IN ('Deposit', 'Open', 'Late')
+                      ) as subset
+                    )  t  
+                    group by aging
+
+                    UNION
+
+                    SELECT 'Default', count(*), aging from 
+                    (  
+                      select case    
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 0 and 180 then 'default current'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 181 and 210   then '30 days past'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 211 and 240 then '60 days past'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 241 and 360 then '3 - 6 months past'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 361 and 540 then '6 - 12 months past'  
+                        when DATEDIFF(CURRENT_DATE(), trans_date)  between 541 and 900 then '1 - 2 years past'  
+                        else 'greater than 2 years past'
+                        end as aging
+                      from (
+	                    select * FROM transactions where status IN ('Default')
+                      ) as subset
+                    )  t  
+                    group by aging
+                ");
+
+                command = command.Replace("\r\n", "");
+                command = command.Replace("\n", "");
+
+                using (MySqlDataReader reader = MySqlHelper.ExecuteReader(connectionString, command))
+                {
+                    while (reader.Read())
+                    {
+                        var obj = new AgingEntity()
+                        {
+                            TransactionState = reader[0].ToString(),
+                            NumberOfTransactions = int.Parse( reader[1].ToString()),
+                            AgingRange = reader[2].ToString(),
+                        };
+
+                        returnValue.Add(obj);
+                    }
+                    reader.Close();
+                }
+
+            }
+
+            return returnValue;
+        }
+
+        public decimal AverageLoanAmountColorado(DateTime startDate, DateTime endDate)
+        {
+            decimal? returnValue = 0;
+            using (var db = new Entity.LoanStopEntities(connectionString))
+            {
+                string command = string.Format(
+                @"
+                    SELECT SUM(amount_dispursed)/Count(*) from transactions WHERE status <> 'Void' AND trans_date >= '{0}' and trans_date < '{1}'
+                ", startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+
+                command = command.Replace("\r\n", "");
+                command = command.Replace("\n", "");
+
+                var query = db.Database.SqlQuery<decimal?>(command);
+
+                if (query.FirstOrDefault<decimal?>() != null)
+                    returnValue = query.FirstOrDefault<decimal?>();
+            }
+
+            return returnValue.Value;
+        }
+
+        public decimal AverageLoanAmountWyoming(DateTime startDate, DateTime endDate)
+        {
+            decimal? returnValue = 0;
+            using (var db = new Entity.LoanStopEntities(connectionString))
+            {
+                string command = string.Format(
+                @"
+                    SELECT SUM(amount_dispursed)/Count(*) from transactions WHERE status <> 'Void' AND trans_date >= '{0}' and trans_date < '{1}'
+                ", startDate.ToString("yyyy-MM-dd"), endDate.ToString("yyyy-MM-dd"));
+
+                command = command.Replace("\r\n", "");
+                command = command.Replace("\n", "");
+
+                var query = db.Database.SqlQuery<decimal?>(command);
+
+                if (query.FirstOrDefault<decimal?>() != null)
+                    returnValue = query.FirstOrDefault<decimal?>();
+            }
+
+            return returnValue.Value;
+        }
+
     }
 }
